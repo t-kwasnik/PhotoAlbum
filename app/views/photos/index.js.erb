@@ -1,0 +1,15 @@
+
+var photos = <%= @photo_collection.to_json.html_safe %>;
+
+if (typeof markers != 'undefined') {
+  my_map.removeLayer(markers);
+};
+
+markers = L.mapbox.featureLayer(photos);
+markers.addTo(my_map);
+
+my_map.fitBounds(markers.getBounds());
+
+
+
+
