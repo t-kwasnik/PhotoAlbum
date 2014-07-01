@@ -20,7 +20,18 @@ $(function(){ $(document).foundation(); });
 
 $(window).load(function() {
 
-  my_map = L.mapbox.map('my_map', 'examples.map-i86nkdio')
-      .setView([42.25, -71], 9)
+  var my_map = L.mapbox.map('my_map', 'examples.map-i86nkdio')
 
-});
+  $.getJSON( "/photos.json", function( data ) {
+
+      if (typeof markers != 'undefined') {
+        my_map.removeLayer(markers);
+      };
+
+      var markers = L.mapbox.featureLayer(data);
+      markers.addTo(my_map);
+      my_map.fitBounds(markers.getBounds());
+    });
+
+
+})

@@ -1,5 +1,5 @@
 class PhotosController < ApplicationController
-  respond_to :html, :js
+  respond_to :html, :json
   include ApplicationHelper
 
   def index
@@ -11,6 +11,8 @@ class PhotosController < ApplicationController
     @photos.each do |photo|
       @photo_collection[:features] << geoJSON(photo.geom, { description: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src=\"#{photo.image_url(:med)}\" width=\"300px\" />" }) if !photo.geom.nil?
     end
+
+    respond_with(@photo_collection)
   end
 
   def create
