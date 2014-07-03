@@ -10,6 +10,6 @@ class User < ActiveRecord::Base
   has_many :countries, through: :photos
   has_many :my_maps, dependent: :destroy
 
-  validates :username, uniqueness: true
+  validates :username, uniqueness: true, presence: true
 
 end
