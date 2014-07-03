@@ -16,7 +16,7 @@ class PhotosController < ApplicationController
   def create
     photo_params[:image].each do |p|
       current = Photo.new(image: p )
-      current = current_user
+      current.user_id = current_user.id
 
       if current.image.filename
         gps = EXIFR::JPEG.new(p.tempfile).gps
