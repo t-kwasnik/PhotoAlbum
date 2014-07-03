@@ -16,12 +16,12 @@ scenario "user signs out" do
   user = FactoryGirl.create(:user)
   sign_in_as(user)
 
-  click_on "Sign out"
+  click_on "Sign Out"
 
   expect(page).to have_content "Signed out successfully."
-  expect(page).to_not have "Sign Out"
-  expect(page).to have "Sign Up"
-  expect(page).to have "Sign In"
+  expect(page).to_not have_content "Sign Out"
+  expect(page).to have_content "Sign Up"
+  expect(page).to have_content "Sign In"
 end
 
 end

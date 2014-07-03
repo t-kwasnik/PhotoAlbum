@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root to:"welcome#index"
+
   devise_for :users
   resources :photos, only: [:index, :create]
   # The priority is based upon order of creation: first created -> highest priority.

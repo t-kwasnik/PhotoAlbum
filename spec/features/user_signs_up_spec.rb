@@ -14,32 +14,59 @@ so I can create an account and go to my main page
 
   scenario 'user signs up from main page' do
 
+    visit root_path
+    click_on "Sign Up"
+    fill_in "Username", with: "Bubba"
+    fill_in "Email", with: "Bubba@gUmp.Com"
+    fill_in "Password", with: "shrimp1234"
+    fill_in "Confirm", with: "shrimp1234"
+    click_on "Start mapping!"
+
+    expect(page).to have_content "Welcome!"
+    expect(page).to have_content "Bubba"
+    expect(page).to have_content "Sign Out"
+    expect(page).to_not have_content "Sign Up"
+    expect(page).to_not have_content "Sign In"
+  end
+
+  scenario 'user cant signs up with existing username' do
+
     user = FactoryGirl.create(:user)
 
     visit root_path
-    click "Sign Up"
+    click_on "Sign Up"
     fill_in "Username", with: user.username
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    fill_in "Confirm Password", with: user.password
+    fill_in "Email", with: "Bubba@gUmp.Com"
+    fill_in "Password", with: "shrimp1234"
+    fill_in "Confirm", with: "shrimp1234"
     click_on "Start mapping!"
 
-    expect(page).to have_content "Welcome #{user.username}!"
-    expect(page).to have_content user.username
-    expect(page).to have "Sign Out"
-    expect(page).to_not have "Sign Up"
-    expect(page).to_not have "Sign In"
+    expect(page).to have_content "already been taken"
+  end
+
+scenario 'user cant signs up with existing username' do
+
+    user = FactoryGirl.create(:user)
+
+    visit root_path
+    click_on "Sign Up"
+    fill_in "Username", with: "Bubba"
+    fill_in "Email", with: user.email
+    fill_in "Password", with: "shrimp1234"
+    fill_in "Confirm", with: "shrimp1234"
+    click_on "Start mapping!"
+
+    expect(page).to have_content "already been taken"
   end
 
 
   scenario "user signs up without required information" do
-    visit root_path
-    click "Sign Up"
 
-    expect(page).to have_content "Username can't be blank"
-    expect(page).to have_content "Confirm Password can't be blank"
-    expect(page).to have_content "Email can't be blank"
-    expect(page).to have_content "Password can't be blank"
+    visit root_path
+    click_on "Sign Up"
+    click_on "Start mapping!"
+
+    expect(page).to have_content "can't be blank"
   end
 
 end

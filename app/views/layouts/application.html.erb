@@ -32,8 +32,9 @@
           <li><%= link_to "Sign In", new_user_session_path %></li>
           <li><%= link_to "Sign Up", new_user_registration_path %></li>
         <% else %>
+          <li><p id="username"><%= current_user.username %></p></li>
           <li><%= link_to "Edit Account", new_user_session_path %></li>
-          <li><%= link_to "Sign Out", new_user_registration_path %></li>
+          <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
         <% end %>
         <div>
       </li>
@@ -41,6 +42,10 @@
     </section>
     </nav>
     </div>
+
+    <p><%= flash[:alert] %></p>
+    <p><%= flash[:notice] %></p>
+
     <%= yield %>
     <%= javascript_include_tag  %>
   </body>
