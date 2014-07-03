@@ -42,9 +42,10 @@
     </section>
     </nav>
     </div>
-
-    <p><%= flash[:alert] %></p>
-    <p><%= flash[:notice] %></p>
+    <% if flash.any? %>
+      <p><%= flash[:alert] %></p>
+      <p><%= flash[:notice] %></p>
+    <% end %>
 
     <%= yield %>
     <%= javascript_include_tag  %>

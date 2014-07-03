@@ -245,6 +245,7 @@ DEPENDENCIES
   launchy
   mini_magick
   pg
+  pry
   pry-rails
   rails (= 4.1.2)
   rgeo
