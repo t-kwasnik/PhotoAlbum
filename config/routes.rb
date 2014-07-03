@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  root to:"welcome#index"
+  root to:"main#root"
+
+  resources :main, only: [:index]
 
   devise_for :users
   resources :photos, only: [:index, :create]

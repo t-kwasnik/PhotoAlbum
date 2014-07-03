@@ -3,12 +3,10 @@ class PhotosController < ApplicationController
   include ApplicationHelper
 
   def index
-
-    @photos =  Photo.all
     @new_photo = Photo.new
 
     @photo_collection = { type: "FeatureCollection", features: [] }
-    @photos.each do |photo|
+    Photo.all.each do |photo|
       @photo_collection[:features] << geoJSON(photo.geom, { photo_id: photo.id, image: photo.image_url(:med), city: photo.city, state: photo.state, country: photo.country, 'marker-color' => "#bbb" }) if !photo.geom.nil?
     end
 
