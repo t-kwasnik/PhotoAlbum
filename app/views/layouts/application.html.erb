@@ -11,6 +11,8 @@
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application", "vendor/modernizr" %>
     <%= csrf_meta_tags %>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
   </head>
 
   <body>
@@ -25,24 +27,20 @@
     </ul>
 
     <ul class = "right">
-      <li>
         <div class= class="row">
-          <%= simple_form_for @new_photo do |f| %>
-            <div class="large-6 columns">
-              <%= f.input :image, type: :file, :input_html => { :multiple => true, class: "large-4 columns " }, label: false %></div>
-          <%= f.button :submit, 'Map them!' %>
-          <% end %>
+        <% if !current_user %>
+          <li><%= link_to "Sign In", new_user_session_path %></li>
+          <li><%= link_to "Sign Up", new_user_registration_path %></li>
+        <% else %>
+          <li><%= link_to "Edit Account", new_user_session_path %></li>
+          <li><%= link_to "Sign Out", new_user_registration_path %></li>
+        <% end %>
         <div>
       </li>
     </ul>
     </section>
     </nav>
     </div>
-
-  <div id='photos'>
-  </div>
-
-
     <%= yield %>
     <%= javascript_include_tag  %>
   </body>

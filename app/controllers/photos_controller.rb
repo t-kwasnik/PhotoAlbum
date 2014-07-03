@@ -9,7 +9,7 @@ class PhotosController < ApplicationController
 
     @photo_collection = { type: "FeatureCollection", features: [] }
     @photos.each do |photo|
-      @photo_collection[:features] << geoJSON(photo.geom, { description: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src=\"#{photo.image_url(:med)}\" width=\"300px\" />" }) if !photo.geom.nil?
+      @photo_collection[:features] << geoJSON(photo.geom, { photo_id: photo.id, image: photo.image_url(:med), city: photo.city, state: photo.state, country: photo.country, 'marker-color' => "#bbb" }) if !photo.geom.nil?
     end
 
     respond_with(@photo_collection)
@@ -18,6 +18,7 @@ class PhotosController < ApplicationController
   def create
     photo_params[:image].each do |p|
       current = Photo.new(image: p )
+      current = current_user
 
       if current.image.filename
         gps = EXIFR::JPEG.new(p.tempfile).gps
@@ -34,13 +35,13 @@ class PhotosController < ApplicationController
 
           JSON.parse(res.body)["results"].each do |results|
             results.each do |result|
-              if result["type"] == "city"
-                current.city = result["name"]
-              elsif result["type"] == "province"
-                current.state = result["name"]
-              elsif result["type"] == "country"
-                current.country = result["name"]
-              end
+              # if result["type"] == "city"
+              #   current.city = result["name"]
+              # elsif result["type"] == "province"
+              #   current.state = result["name"]
+              # elsif result["type"] == "country"
+              #   current.country = result["name"]
+              # end
             end
           end
         end

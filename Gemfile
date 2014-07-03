@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'devise'
 gem 'activerecord-postgis-adapter'
 gem 'rgeo-activerecord'
 gem 'rgeo-geojson'
@@ -11,7 +11,6 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
 gem 'simple_form'
-gem 'pry'
 gem 'exifr'
 
 
@@ -38,9 +37,21 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
 
-gem 'dotenv-rails'
+group :development, :test do
+  gem 'email_spec'
+  gem 'pry-rails'
+  gem 'factory_girl_rails'
+  gem 'spring'
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'launchy'
+  gem 'dotenv-rails'
+  gem 'shoulda-matchers'
+  gem 'valid_attribute'
+end
+
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
