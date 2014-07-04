@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :photo do
-    sequence(:my_description, 100) { |n| "description " * n }
-    sequence(:placename, 100) { |n| "placename #{n}" }
+    image { Rack::Test::UploadedFile.new(File.join(Rails.root, 'app', 'assets', 'images', 'test.jpg')) }
     user
     city
     state

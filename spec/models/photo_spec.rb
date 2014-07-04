@@ -9,6 +9,8 @@ describe Photo do
   it { should have_many :my_map_photos }
 
   it { should validate_presence_of(:user_id) }
+  it { should validate_presence_of(:image) }
+
 
   it { should_not have_valid(:user_id).when(nil) }
 
