@@ -2,12 +2,14 @@ class PhotosController < ApplicationController
   respond_to :html, :json
   include ApplicationHelper
 
+  before_filter :authenticate
+
   def index
     @new_photo = Photo.new
 
-    @photo_collection = { type: "FeatureCollection", features: [] }
-    Photo.all.each do |photo|
-      @photo_collection[:features] << geoJSON(photo.geom, { photo_id: photo.id, image: photo.image_url(:med), city: photo.city, state: photo.state, country: photo.country, 'marker-color' => "#bbb" }) if !photo.geom.nil?
+    @photo_collection = []
+    Photo.where(user_id: current_user.id).each do |photo|
+      @photo_collection << geoJSON(photo.geom, { photo_id: photo.id, image: photo.image_url(:med), placename: photo.placename })
     end
 
     respond_with(@photo_collection)
