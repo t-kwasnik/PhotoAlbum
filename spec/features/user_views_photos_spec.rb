@@ -32,7 +32,7 @@ so I can manage them
 
         expect( match_url(page.find("#photo#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
         expect( match_url(page.find("#photo#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo2.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
     end
 
     scenario 'user views only own mappable photos', js: true do
@@ -44,7 +44,7 @@ so I can manage them
     scenario 'user views only own unmappable photos', js: true do
         sign_in_as(user)
 
-        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
         expect{ page.find("#photo#{photo5.id}") }.to raise_error
     end
 end
