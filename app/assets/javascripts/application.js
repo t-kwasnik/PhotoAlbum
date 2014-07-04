@@ -118,6 +118,8 @@ $(window).load(function() {
     myMap.scrollWheelZoom.enable();
   });
 
+  $(".photo_group ul").draggable({ axis: "x" } );
+
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
   var mappedPhotoCollection = new PhotoCollection();
   var unmappedPhotoCollection = new PhotoCollection();
