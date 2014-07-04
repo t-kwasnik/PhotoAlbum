@@ -20,8 +20,7 @@ $(function(){ $(document).foundation(); });
 
 function MapToolWindow(tag, map_obj, map_name) {
 
-  $("#"+ map_name).prepend('<div id="'+ tag +'" class="MapTool MapToolWindow">A</div>')
-
+  $("#"+ map_name).append('<div id="'+ tag +'" class="map_tool  selection_window">A</div>')
   $("#" + tag ).draggable({ containment: "parent" }).resizable();
 
 };
@@ -78,53 +77,68 @@ $(window).load(function() {
 
 
 
-  var myMap = L.mapbox.map('my_map', 'examples.map-i86nkdio')
-  var geoJSON = {}
+  var myMap = L.mapbox.map('my_map', 'examples.map-i86nkdio', { zoomControl: false })
+  new L.Control.Zoom({ position: 'bottomleft' }).addTo(myMap);
+  var data = {}
 
   $.ajax({
       url: '/photos.json',
       dataType: 'json',
       async: false,
-      success: function(data) {
-            geoJSON = data;
+      success: function(d) {
+            data = d;
       }
   });
 
- $(".MapTool").mousedown(function() {
+ $(".disable_map").mousedown(function() {
     myMap.dragging.disable();
     myMap.touchZoom.disable();
     myMap.doubleClickZoom.disable();
     myMap.scrollWheelZoom.disable();
   });
 
-  $(".MapTool").hover(function() {
+  $(".disable_map").hover(function() {
     myMap.dragging.disable();
     myMap.touchZoom.disable();
     myMap.doubleClickZoom.disable();
     myMap.scrollWheelZoom.disable();
   });
 
-  $("#my_map").mouseup(function() {
+  $(".disable_map").mouseup(function() {
     myMap.dragging.enable();
     myMap.touchZoom.enable();
     myMap.doubleClickZoom.enable();
     myMap.scrollWheelZoom.enable();
   });
 
+  $(".enable_map").click(function() {
+    myMap.dragging.enable();
+    myMap.touchZoom.enable();
+    myMap.doubleClickZoom.enable();
+    myMap.scrollWheelZoom.enable();
+  });
+
+  var geoJSON = { "type" : "FeatureCollection", "features" : [] }
+  var mappedPhotoCollection = new PhotoCollection();
+  var unmappedPhotoCollection = new PhotoCollection();
+
+  for (var i = 0; i < data.length; i++) {
+    var photo_id = "photo" + data[i].properties.photo_id
+    var photo_url = data[i].properties.image
+    if ( data[i].type == "Feature" ) {
+      geoJSON.features.push(data[i])
+      mappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url))
+    } else if ( data[i].type == "Unmapped" ) {
+      unmappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url))
+    };
+  };
   var markers = L.mapbox.featureLayer(geoJSON);
   markers.addTo(myMap);
   myMap.fitBounds(markers.getBounds());
   var mapWindow = new MapWindow(myMap,markers,geoJSON);
 
-
-  var mappedPhotoCollection = new PhotoCollection();
-  for (var i = 0; i < geoJSON.features.length; i++) {
-    var photo_id = "photo" + geoJSON.features[i].properties.photo_id
-    var photo_url = geoJSON.features[i].properties.image
-    mappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url ))
-  };
-
   $( "#mapped_photos_container" ).append( mappedPhotoCollection.asList() );
+  $( "#unmapped_photos_container" ).append( unmappedPhotoCollection.asList() );
 
   $( "#showUnplaced" ).click(function() {
     unplaced = MapToolWindow("unplaced", myMap, "my_map")

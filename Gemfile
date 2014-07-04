@@ -12,6 +12,7 @@ gem 'mini_magick'
 gem 'fog'
 gem 'simple_form'
 gem 'exifr'
+gem 'selenium-webdriver'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -39,6 +40,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 
 group :development, :test do
+  gem 'database_cleaner'
   gem 'pry'
   gem 'email_spec'
   gem 'pry-rails'

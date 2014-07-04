@@ -1,7 +1,6 @@
 class MainController < ApplicationController
 
   def root
-
     if current_user
       redirect_to photos_path
     else
