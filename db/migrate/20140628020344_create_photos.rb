@@ -5,12 +5,13 @@ class CreatePhotos < ActiveRecord::Migration
       t.float :direction
       t.integer :user_id, null: false
       t.boolean :is_public, default: false
-      t.text :my_description
+      t.string :name
+      t.text :description
       t.text :placename
       t.integer :city_id
       t.integer :state_id
       t.integer :country_id
-      t.string :image
+      t.string :image, null: false
       t.timestamps
     end
   end

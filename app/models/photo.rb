@@ -11,6 +11,7 @@ class Photo < ActiveRecord::Base
   has_many :my_maps, through: :my_map_photos
 
   validates :user_id, presence: true
+  validates :image, presence: true
 
   mount_uploader :image, PhotoUploader
 
