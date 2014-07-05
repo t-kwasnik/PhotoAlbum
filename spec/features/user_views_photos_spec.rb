@@ -13,7 +13,7 @@ so I can manage them
 # I must be able to view all photos placed on a map
 # I must be logged in to see my photos
 
-    user = FactoryGirl.create(:user)
+    user = FactoryGirl.create(:user, email: "test@tets.com")
     photo = FactoryGirl.create(:photo, user_id: user.id)
     photo2 =  FactoryGirl.create(:photo, user_id: user.id, image:  Rack::Test::UploadedFile.new(File.join(Rails.root, 'app', 'assets', 'images', 'test2.jpg'))  )
     photo3 = FactoryGirl.create(:photo, geom: nil, user_id: user.id, image:  Rack::Test::UploadedFile.new(File.join(Rails.root, 'app', 'assets', 'images', 'unmap1.jpg')) )
