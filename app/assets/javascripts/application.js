@@ -12,9 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require foundation
+
 //= require turbolinks
 //= require_tree .
+//= require foundation
 
 $(function(){ $(document).foundation(); });
 
@@ -86,6 +87,10 @@ function MapWindow(map, markers, geoJSON){
     map.on('click',resetMarkerColors);
 
     $(".disable_map").mousedown(function() {
+      disableMap();
+    });
+
+    $(".disable_map").hover(function() {
       disableMap();
     });
 

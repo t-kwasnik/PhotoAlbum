@@ -10,8 +10,6 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
-
-
  *= require_tree .
  *= require_self
  *= require foundation_and_overrides
@@ -39,7 +37,7 @@ li {
   width: 45%;
   color: white;
   position: relative;
-  background-color: rgba(0,0,0,.4);
+  background-color: rgba(0,0,0,.7);
   border-radius: 15px;
   z-index: 2;
   float: right;

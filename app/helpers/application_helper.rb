@@ -11,6 +11,13 @@ module ApplicationHelper
     output
   end
 
+  def compile_my_map(id)
+    my_map = MyMap.find(id)
+    my_map_hash = JSON.parse(my_map.to_json)
+    my_map_hash["photos"] = my_map.my_map_photos.order(:order)
+    my_map_hash
+  end
+
   def authenticate
     if current_user.nil?
       flash[:notice] = "You need to sign in first."

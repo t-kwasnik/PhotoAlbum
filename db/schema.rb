@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20140702221857) do
     t.integer  "my_map_id",   null: false
     t.integer  "photo_id",    null: false
     t.integer  "order",       null: false
+    t.string   "name"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"

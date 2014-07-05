@@ -1,17 +1,18 @@
 <div id="my_map" class="my_custom_map">
   <div id="my_c_map_content_container" class="disable_map">
     <ul class="disable_map">
-      <li><h1><%= @my_map_hash["name"] %></h1><li>
-      <li><span><%= @my_map_hash["description"] %></span><li>
-      <% @my_map_hash["photos"].each do |p| %>
+      <li><h1><%= @my_map["name"] %></h1></li>
+      <li><span><%= @my_map["description"] %></span></li>
+      <% @my_map["photos"].each do |p| %>
         <li>
           <div class="c_map_content">
             <h4><%= p.name %></h4>
-            <img src=<%= p.image_url %> />
+            <img id="photo<%= p.photo_id %>" src=<%= p.photo.image_url %> />
             <span><%= p.description %></span>
           </div>
         </li>
       <% end %>
+      <li><%= link_to "Edit this map.", edit_my_map_path(@my_map) if current_user %></li>
     </ul>
   </div>
 </div>

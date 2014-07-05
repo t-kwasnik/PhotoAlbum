@@ -13,6 +13,7 @@ class Create < ActiveRecord::Migration
         t.integer :my_map_id, null: false
         t.integer :photo_id, null: false
         t.integer :order, null: false
+        t.string :name
         t.text :description
         t.timestamps
       end

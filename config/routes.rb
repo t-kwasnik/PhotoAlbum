@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   resources :my_maps, only: [:show, :create, :edit, :update]
 
+  resources :my_maps do
+    resources :my_map_photos, only: [:update]
+  end
+
   resources :photos, only: [:index, :create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

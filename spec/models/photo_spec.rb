@@ -41,7 +41,7 @@ describe Photo do
   end
 
   it "links to tags" do
-    p = FactoryGirl.create(:photo)
+    p = FactoryGirl.create(:photo, user_id: 1)
     t = FactoryGirl.create(:tag)
     pt = FactoryGirl.create(:photo_tag, photo_id: p.id, tag_id: t.id)
 
