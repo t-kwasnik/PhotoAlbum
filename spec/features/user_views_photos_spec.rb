@@ -22,6 +22,7 @@ so I can manage them
     photo4 =  FactoryGirl.create(:photo, user_id: user2.id, image:  Rack::Test::UploadedFile.new(File.join(Rails.root, 'app', 'assets', 'images', 'test2.jpg')) )
     photo5 = FactoryGirl.create(:photo, geom: nil, user_id: user2.id, image:  Rack::Test::UploadedFile.new(File.join(Rails.root, 'app', 'assets', 'images', 'unmap1.jpg')) )
 
+
     scenario 'must log in to see photos', js: true do
         visit photos_path
         expect(page).to have_content "You need to sign in first."
