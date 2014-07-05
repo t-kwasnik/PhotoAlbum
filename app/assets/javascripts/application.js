@@ -73,9 +73,7 @@ function MapWindow(map, markers, geoJSON){
 };
 
 
-$(window).load(function() {
-
-
+$( window ).load( function() {
 
   var myMap = L.mapbox.map('my_map', 'examples.map-i86nkdio', { zoomControl: false })
   new L.Control.Zoom({ position: 'bottomleft' }).addTo(myMap);
@@ -97,12 +95,13 @@ $(window).load(function() {
     myMap.scrollWheelZoom.disable();
   });
 
-  $(".disable_map").hover(function() {
+ $(".disable_map").hover(function() {
     myMap.dragging.disable();
     myMap.touchZoom.disable();
     myMap.doubleClickZoom.disable();
     myMap.scrollWheelZoom.disable();
   });
+
 
   $(".disable_map").mouseup(function() {
     myMap.dragging.enable();
@@ -118,7 +117,6 @@ $(window).load(function() {
     myMap.scrollWheelZoom.enable();
   });
 
-  $(".photo_group ul").draggable({ axis: "x" } );
 
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
   var mappedPhotoCollection = new PhotoCollection();

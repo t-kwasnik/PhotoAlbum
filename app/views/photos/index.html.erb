@@ -1,6 +1,4 @@
-
 <div id = "my_map" class = "enable_map">
-
   <div class='map_tool photo_container '>
     <div id='mapped_photos_container' class='photo_group disable_map'>Mapped</div>
     <div id='unmapped_photos_container' class='photo_group disable_map'>Unmapped</div>
@@ -13,6 +11,14 @@
   </div>
 
   <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
+</div>
+
+<div id="my_maps_container">
+  <ul>
+    <% @my_maps.each do |map| %>
+      <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
+    <% end %>
+  </ul>
 </div>
 
 

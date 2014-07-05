@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   resources :main, only: [:index]
 
   devise_for :users
+
+  resources :my_maps, only: [:show, :create, :edit, :update]
+
   resources :photos, only: [:index, :create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
