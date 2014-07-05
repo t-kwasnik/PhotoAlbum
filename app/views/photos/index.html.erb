@@ -15,6 +15,12 @@
 
 <div id="my_maps_container">
   <ul>
+    <li>
+      <%= simple_form_for @new_my_map do |f| %>
+      <%= f.input :name, type: :string, label: "Name" %>
+      <%= f.button :submit, 'Create new map' %>
+      <% end %>
+    </li>
     <% @my_maps.each do |map| %>
       <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
     <% end %>

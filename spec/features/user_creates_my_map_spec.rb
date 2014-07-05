@@ -51,23 +51,18 @@ so I can categorize, document and share my mapped pictures
     scenario 'create and be redirection to a my map from home page', js: true do
         sign_in_as(user)
         visit photos_path
-        click_on "Create new map"
         fill_in "Name", with: "Cool Places"
-        fill_in "Description", with: "I think these places are great"
-        click_on "Create Map"
+        click_on "Create new map"
 
         expect(page).to have_content "Cool Places"
-        expect(page).to have_content "I think these places are great"
-        expect( all("img").count ).to  eq(0)
+        expect( all(".c_map_content").count ).to  eq(0)
     end
 
-    scenario 'map name is required to create a map', js: true do
+    scenario 'map name is required to create a map' do
         sign_in_as(user)
         visit photos_path
         click_on "Create new map"
-        fill_in "Description", with: "I think these places are great"
-        click_on "Create Map"
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content "Failed to create map - name can't be blank"
     end
 end
 

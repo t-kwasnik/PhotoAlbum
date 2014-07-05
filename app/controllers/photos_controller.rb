@@ -9,6 +9,7 @@ class PhotosController < ApplicationController
     @my_maps = MyMap.where(user_id: current_user)
 
     @new_photo = Photo.new
+    @new_my_map = MyMap.new
 
     @photo_collection = []
     Photo.where(user_id: current_user.id).each do |photo|

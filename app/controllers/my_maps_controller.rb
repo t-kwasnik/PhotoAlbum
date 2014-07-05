@@ -12,7 +12,14 @@ class MyMapsController < ApplicationController
   end
 
   def create
-
+    new_my_map = MyMap.new(my_map_params)
+    new_my_map.user_id = current_user[:id]
+    if new_my_map.save
+      redirect_to my_map_path(new_my_map)
+    else
+      flash[:notice] = "Failed to create map - name can't be blank"
+      redirect_to photos_path
+    end
   end
 
   def edit
