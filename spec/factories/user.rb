@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:email, 1000) { |n| "person#{n}@example.com" }
+    sequence(:email) { |n| "person#{n}@example.com" }
     password '1234abcd'
-    sequence(:username, 100) { |n| "person#{n}" }
+    sequence(:username) { |n| "person#{n}" }
     is_admin false
 
     trait :admin do

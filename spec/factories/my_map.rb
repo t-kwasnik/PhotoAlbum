@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  sequence(:name, 100) { |n| "Album #{n}" }
+  sequence(:name) { |n| "Album #{n}" }
 
   factory :my_map do
     name
