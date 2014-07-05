@@ -1,0 +1,29 @@
+<div id="my_map" class="my_custom_map">
+  <div id="my_c_map_content_container" class="disable_map">
+    <ul class="disable_map">
+    <%= link_to "Done with Changes", my_map_path(@my_map) %>
+      <%= simple_form_for @my_map do |f| %>
+        <li><%= f.input :is_public, label: "Make this map public" %></li>
+        <li><%= f.input :name %></li>
+        <li><%= f.input :description %></li>
+        <li><%= f.submit "Save_Heading" %></li>
+      <% end %>
+
+      <% @my_map_photos.each_with_index do |p, i| %>
+      <% i+=1%>
+        <li>
+          <div class="c_map_content disable_map">
+            <ul>
+              <%= simple_form_for [ @my_map, p ] do |f| %>
+                <li><%= f.input :name, :input_html => { id:  "Heading#{i}" }, label: "Heading#{i}"  %></li>
+                <li><img id="photo<%= p.photo_id %>" src=<%= p.photo.image_url %> /></li>
+                <li><%= f.input :description, :input_html => { id:  "Description#{i}" }, label: "Description#{i}" %></li>
+                <%= f.submit "Save_Entry#{i}" %>
+              <% end %>
+            </ul>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

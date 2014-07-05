@@ -1,14 +1,13 @@
 class MyMapsController < ApplicationController
   respond_to :html, :json
   include ApplicationHelper
-  before_filter :authenticate
+
+  before_filter :authenticate,  except: :show
+  before_filter :public_map_check,  only: :show
 
   def show
-    my_map = MyMap.where(id: params[:id], user_id: current_user.id).first
-    @my_map_hash = JSON.parse(my_map.to_json)
-    @my_map_hash["photos"] = my_map.photos
-
-    respond_with(@my_map_hash)
+    @my_map = compile_my_map(params[:id])
+    respond_with(@my_map)
   end
 
   def create
@@ -23,16 +22,23 @@ class MyMapsController < ApplicationController
   end
 
   def edit
-
+    @my_map = MyMap.find(params[:id])
+    @my_map_photos = @my_map.my_map_photos.order(:order)
   end
 
   def update
+    @my_map = MyMap.find(params[:id])
 
+    @my_map.attributes = my_map_params
+    if !@my_map.save
+      flash[:notice] = "Failed to save"
+    end
+    redirect_to edit_my_map_path(params[:id])
   end
 
   private
 
   def my_map_params
-    params.required(:my_map).permit( :id, :name, :description )
+    params.required(:my_map).permit( :id, :name, :description, :is_public )
   end
 end
