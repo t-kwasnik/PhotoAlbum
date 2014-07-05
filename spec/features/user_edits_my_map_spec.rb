@@ -87,13 +87,13 @@ so I can change the names and descriptions of the map and it's photos
         click_on "Save_Heading"
         click_on "Sign Out"
 
-        visit edit_my_map_path(my_map.id)
+        visit my_map_path(my_map.id)
 
-        expect(page).to have_content "Title0"
-        expect(page).to have_content "Description0"
+        expect(page).to have_content my_map.name
+        expect(page).to_not have_content "Edit this map."
 
-        expect( match_url(page.find("#photo#{my_map_photos[1].id}")['src'], my_map_photos[1].image_url )).to eq(true)
-        expect( match_url(page.find("#photo#{my_map_photos[2].id}")['src'], my_map_photos[2].image_url )).to eq(true)
-        expect( match_url(page.find("#photo#{my_map_photos[3].id}")['src'], my_map_photos[0].image_url )).to eq(true)
+        expect( match_url(page.find("#photo#{my_map_photos[1].photo.id}")['src'], my_map_photos[1].photo.image_url )).to eq(true)
+        expect( match_url(page.find("#photo#{my_map_photos[2].photo.id}")['src'], my_map_photos[2].photo.image_url )).to eq(true)
+        expect( match_url(page.find("#photo#{my_map_photos[0].photo.id}")['src'], my_map_photos[0].photo.image_url )).to eq(true)
     end
 end

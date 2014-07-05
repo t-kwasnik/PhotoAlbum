@@ -12,7 +12,7 @@
           </div>
         </li>
       <% end %>
-      <li><%= link_to "Edit this map.", edit_my_map_path(@my_map) %></li>
+      <li><%= link_to "Edit this map.", edit_my_map_path(@my_map) if current_user %></li>
     </ul>
   </div>
 </div>

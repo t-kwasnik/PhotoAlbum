@@ -25,12 +25,4 @@ module ApplicationHelper
     end
   end
 
-  def public_map_check
-    begin
-      authenticate if !MyMap.find(params[:id]).is_public
-    rescue
-      redirect_to root_path
-    end
-  end
-
 end

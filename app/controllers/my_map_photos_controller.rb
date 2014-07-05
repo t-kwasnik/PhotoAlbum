@@ -5,7 +5,10 @@ class MyMapPhotosController < ApplicationController
   def update
     @my_map_photo = MyMapPhoto.find(params[:id])
 
+    if @my_map_photo.my_map.user_id != current_user.id then redirect_to main_index_path end
+
     @my_map_photo.attributes = my_map_photo_params
+
     if !@my_map_photo.save
       flash[:notice] = "Failed to save"
     end

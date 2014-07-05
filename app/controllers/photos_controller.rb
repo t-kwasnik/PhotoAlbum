@@ -6,13 +6,13 @@ class PhotosController < ApplicationController
 
   def index
 
-    @my_maps = MyMap.where(user_id: current_user)
+    @my_maps = MyMap.where( user_id: current_user )
 
     @new_photo = Photo.new
     @new_my_map = MyMap.new
 
     @photo_collection = []
-    Photo.where(user_id: current_user.id).each do |photo|
+    Photo.where( user_id: current_user ).each do |photo|
       @photo_collection << geoJSON(photo.geom, { photo_id: photo.id, image: photo.image_url(:med), placename: photo.placename })
     end
 
