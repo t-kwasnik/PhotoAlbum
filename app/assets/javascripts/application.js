@@ -89,6 +89,10 @@ function MapWindow(map, markers, geoJSON){
       disableMap();
     });
 
+    $(".disable_map").hover(function() {
+      disableMap();
+    });
+
    $(".disable_map").dblclick(function() {
       disableMap();
     });
