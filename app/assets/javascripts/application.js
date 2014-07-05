@@ -20,8 +20,9 @@ $(function(){ $(document).foundation(); });
 
 function MapToolWindow(tag, map_obj, map_name) {
 
-  $("#"+ map_name).append('<div id="'+ tag +'" class="map_tool  selection_window">A</div>')
-  $("#" + tag ).draggable({ containment: "parent" }).resizable();
+  $("#"+ map_name).append('<div id="'+ tag +'" class="map_tool selection_window">A</div>')
+  $(".selection_window").draggable({ containment: "parent" }).resizable();
+  $(".selection_window").addClass("disable_map")
 
 };
 
@@ -58,6 +59,20 @@ function MapWindow(map, markers, geoJSON){
     $("#mapped_photos_container img").removeClass("collection_photo_active");
   };
 
+  disableMap = function() {
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+  };
+
+  enableMap = function() {
+    map.dragging.enable();
+    map.touchZoom.enable();
+    map.doubleClickZoom.enable();
+    map.scrollWheelZoom.enable();
+  };
+
   this.startListeners = function(){
     markers.on('click', function(e) {
       resetMarkerColors();
@@ -69,6 +84,23 @@ function MapWindow(map, markers, geoJSON){
     });
 
     map.on('click',resetMarkerColors);
+
+    $(".disable_map").mousedown(function() {
+      disableMap();
+    });
+
+   $(".disable_map").dblclick(function() {
+      disableMap();
+    });
+
+    $(".enable_map").hover(function() {
+      enableMap();
+    });
+
+    $(".enable_map").mousedown(function() {
+      enableMap();
+    });
+
   };
 };
 
@@ -87,36 +119,6 @@ $( window ).load( function() {
             data = d;
       }
   });
-
- $(".disable_map").mousedown(function() {
-    myMap.dragging.disable();
-    myMap.touchZoom.disable();
-    myMap.doubleClickZoom.disable();
-    myMap.scrollWheelZoom.disable();
-  });
-
- $(".disable_map").hover(function() {
-    myMap.dragging.disable();
-    myMap.touchZoom.disable();
-    myMap.doubleClickZoom.disable();
-    myMap.scrollWheelZoom.disable();
-  });
-
-
-  $(".disable_map").mouseup(function() {
-    myMap.dragging.enable();
-    myMap.touchZoom.enable();
-    myMap.doubleClickZoom.enable();
-    myMap.scrollWheelZoom.enable();
-  });
-
-  $(".enable_map").click(function() {
-    myMap.dragging.enable();
-    myMap.touchZoom.enable();
-    myMap.doubleClickZoom.enable();
-    myMap.scrollWheelZoom.enable();
-  });
-
 
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
   var mappedPhotoCollection = new PhotoCollection();
