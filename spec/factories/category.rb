@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :category do
-    sequence(:name, 100) { |n| "Category #{rand(n)}" }
+    sequence(:name) { |n| "Category #{n}" }
   end
 end

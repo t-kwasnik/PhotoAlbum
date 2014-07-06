@@ -5,7 +5,7 @@ class CreateAuxPhotoTables < ActiveRecord::Migration
         t.string :name, null: false
         t.timestamps
       end
-      add_index table, :name, unique: true
+      add_index table, :name, unique: true  # many cities have the same name
     end
 
     create_table :tags do |t|

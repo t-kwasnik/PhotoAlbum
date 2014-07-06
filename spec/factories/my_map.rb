@@ -1,6 +1,9 @@
 FactoryGirl.define do
+  sequence(:name) { |n| "Album #{n}" }
+
   factory :my_map do
-    sequence(:name, 100) { |n| "Album #{n}" }
+    name
     user
   end
+
 end
