@@ -1,30 +1,23 @@
 require 'rails_helper'
 
 describe MyMap do
-  it { should belong_to :user }
-
-  it { should validate_presence_of(:user_id) }
-  it { should validate_presence_of(:name) }
-
   it { should have_valid(:name).when("My Awesome Map") }
   it { should_not have_valid(:name).when(nil) }
-
-  it { should_not have_valid(:user_id).when(nil) }
+  it { should_not have_valid(:user).when(nil) }
 
   it "sets is_public to false by default" do
     user = FactoryGirl.create(:user)
-    expect(MyMap.create(user_id: user, name: "Map 1")[:is_public]).to eq(false)
+    expect(MyMap.create(user: user, name: "Map 1")[:is_public]).to eq(false)
   end
 
   it "links to user" do
-    mm = FactoryGirl.create(:my_map)
-    expect(mm.user.id).to_not eq(nil)
+    user = FactoryGirl.create(:user)
+    my_map = FactoryGirl.create(:my_map, user: user)
+    expect(my_map.user).to eq(user)
   end
 
   it "links to photos" do
-    mm = FactoryGirl.create(:my_map)
-    FactoryGirl.create_list(:my_map_photo, 2, my_map_id: mm.id)
-
-    expect(mm.photos.length).to eq(2)
+    my_map = FactoryGirl.create(:map_with_photos, photos_count: 5)
+    expect(my_map.photos.length).to eq(5)
   end
 end
