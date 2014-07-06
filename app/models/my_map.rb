@@ -4,5 +4,5 @@ class MyMap < ActiveRecord::Base
   has_many :photos, through: :my_map_photos
 
   validates :name, presence: true
-  validates :user_id, presence: true
+  validates :user, presence: true
 end

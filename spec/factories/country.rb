@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :country do
-    sequence(:name, 100) { |n| "Country #{n}" }
+    sequence( :name ) { |n| "Country #{n}" }
   end
 end

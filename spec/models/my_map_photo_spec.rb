@@ -1,24 +1,17 @@
 require 'rails_helper'
 
 describe MyMapPhoto do
-  it { should belong_to :photo }
-  it { should belong_to :my_map }
-
-  it { should validate_presence_of(:my_map_id) }
-  it { should validate_presence_of(:photo_id) }
   it { should validate_presence_of(:order) }
+  it { should validate_presence_of(:my_map) }
+  it { should validate_presence_of(:photo) }
 
-  it { should have_valid(:order).when(1) }
-  it { should_not have_valid(:order).when(nil) }
-
-  it { should_not have_valid(:photo_id).when(nil) }
-  it { should_not have_valid(:my_map_id).when(nil) }
 
   it "links to photo and map" do
-    mmp = FactoryGirl.create(:my_map_photo)
-
-    expect(mmp.photo.id).to_not eq(nil)
-    expect(mmp.my_map.id).to_not eq(nil)
+    photo = FactoryGirl.create(:photo)
+    my_map = FactoryGirl.create(:my_map)
+    my_map_photo = FactoryGirl.create(:my_map_photo, photo: photo, my_map: my_map)
+    expect(my_map_photo.photo).to eq(photo)
+    expect(my_map_photo.my_map.name).to eq(my_map.name)
   end
 
 end
