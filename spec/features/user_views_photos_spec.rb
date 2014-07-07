@@ -46,6 +46,7 @@ so I can manage them
         markers[0].click
         expect( all(".selected_photo_div").count ).to eq(1)
 
+        markers = all(".leaflet-marker-icon")
         markers[1].click
         expect( all(".selected_photo_div").count ).to eq(2)
     end

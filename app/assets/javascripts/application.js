@@ -28,23 +28,26 @@ function MapToolWindow(tag, map_obj, map_name) {
 };
 
 function PhotoCollection() {
-  this.photos = [];
+  this.contents = [];
   this.asList = function (){
     html = $( "<ul>" );
-    for (var i = 0; i < this.photos.length; i++) {
-      this.photos[i].html.appendTo(html);
+    for (var i = 0; i < this.contents.length; i++) {
+      $( $( "<li>" ).append( this.contents[i].html ) ).appendTo(html);
     };
     return html;
-  }
-}
+  };
+};
 
 function CollectionPhoto(photo_id, photo_url) {
   this.photo_id = photo_id;
   this.photo_url = photo_url;
-  this.html = $("<li>").append(
-                  $('<img />').attr({ class: 'collection_photo', 'id': this.photo_id, 'src': this.photo_url })
-                );
+  this.html = $('<img />').attr({ class: 'collection_photo', 'id': this.photo_id, 'src': this.photo_url });
 };
+
+function SelectedPhotoDiv(collection_photo) {
+  this.html = $( $("<div>").append( collection_photo.html ) ).addClass("selected_photo_div")
+};
+
 
 function MapWindow(map, markers, geoJSON){
   this.map = map;
@@ -76,12 +79,18 @@ function MapWindow(map, markers, geoJSON){
 
   this.startListeners = function(){
     markers.on('click', function(e) {
-      resetMarkerColors();
       prop = e.layer.feature.properties
       prop['old-color'] = prop['marker-color'];
       prop['marker-color'] = '#B24926';
       markers.setGeoJSON(geoJSON);
+
       $( "#photo" + prop['photo_id'] ).addClass('collection_photo_active');
+      $( "#selected_photos_container ul" ).append(
+        new SelectedPhotoDiv(
+          new CollectionPhoto(prop.photo_id, prop.image)
+        ).html
+      );
+
     });
 
     map.on('click',resetMarkerColors);
@@ -106,6 +115,8 @@ function MapWindow(map, markers, geoJSON){
       enableMap();
     });
 
+    $(  )
+
   };
 };
 
@@ -128,17 +139,19 @@ $( window ).load( function() {
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
   var mappedPhotoCollection = new PhotoCollection();
   var unmappedPhotoCollection = new PhotoCollection();
+  var selectedPhotoCollection = new PhotoCollection();
 
   for (var i = 0; i < data.length; i++) {
     var photo_id = "photo" + data[i].properties.photo_id
     var photo_url = data[i].properties.image
     if ( data[i].type == "Feature" ) {
       geoJSON.features.push(data[i])
-      mappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url))
+      mappedPhotoCollection.contents.push( new CollectionPhoto(photo_id, photo_url))
     } else if ( data[i].type == "Unmapped" ) {
-      unmappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url))
+      unmappedPhotoCollection.contents.push( new CollectionPhoto(photo_id, photo_url))
     };
   };
+
   var markers = L.mapbox.featureLayer(geoJSON);
   markers.addTo(myMap);
   myMap.fitBounds(markers.getBounds());
@@ -146,6 +159,7 @@ $( window ).load( function() {
 
   $( "#mapped_photos_container" ).append( mappedPhotoCollection.asList() );
   $( "#unmapped_photos_container" ).append( unmappedPhotoCollection.asList() );
+  $( "#selected_photos_container" ).append( selectedPhotoCollection.asList() );
 
   $( "#showUnplaced" ).click(function() {
     unplaced = MapToolWindow("unplaced", myMap, "my_map")
