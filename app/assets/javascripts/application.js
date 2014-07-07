@@ -27,7 +27,9 @@ function MapToolWindow(tag, map_obj, map_name) {
 
 };
 
-function PhotoCollection(base_element_tag) {
+function PhotoCollection(base_element_tag, header) {
+  this.header = header
+  this.photo_ids = []
   this.contents = [];
   this.base = base_element_tag
   this.asList = function (){
@@ -38,7 +40,9 @@ function PhotoCollection(base_element_tag) {
     return html;
   };
   this.update = function (){
-    $( this.base ).html( this.asList() )
+    output = $( this.base ).html( $( "<h1>" ).html( this.header ) )
+    this.asList().appendTo( output )
+    output
   };
 };
 
@@ -51,11 +55,6 @@ function CollectionPhoto(photo_id, photo_url) {
 function SelectedPhotoDiv(collection_photo) {
   this.html = $( $("<div>").append( collection_photo.html ) ).addClass("selected_photo_div")
 };
-
-function Selection() {
-  this.list = []
-};
-
 
 function MapWindow(map, markers, geoJSON, containers){
   this.map = map;
@@ -95,12 +94,12 @@ function MapWindow(map, markers, geoJSON, containers){
 
       $( "#photo" + prop['photo_id'] ).addClass('collection_photo_active');
 
+      containers.select.photo_ids.push(prop.photo_id)
       containers.select.contents.push(
         new SelectedPhotoDiv(
           new CollectionPhoto(prop.photo_id, prop.image)
         )
       );
-
      containers.select.update();
 
     });
@@ -148,9 +147,9 @@ $( window ).load( function() {
 
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
 
-  var mappedPhotoCollection = new PhotoCollection("#mapped_photos_container");
-  var unmappedPhotoCollection = new PhotoCollection("#unmapped_photos_container");
-  var selectedPhotoCollection = new PhotoCollection("#selected_photos_container");
+  var mappedPhotoCollection = new PhotoCollection("#mapped_photos_container", "Mapped");
+  var unmappedPhotoCollection = new PhotoCollection("#unmapped_photos_container", "Unmapped");
+  var selectedPhotoCollection = new PhotoCollection("#selected_photos_container", "Selection");
   var containers = {
       "map" : mappedPhotoCollection,
       "unmap" : unmappedPhotoCollection,
@@ -162,9 +161,11 @@ $( window ).load( function() {
     var photo_url = data[i].properties.image
     if ( data[i].type == "Feature" ) {
       geoJSON.features.push(data[i])
+      mappedPhotoCollection.photo_ids.push( photo_id )
       mappedPhotoCollection.contents.push( new CollectionPhoto(photo_id, photo_url))
     } else if ( data[i].type == "Unmapped" ) {
       unmappedPhotoCollection.contents.push( new CollectionPhoto(photo_id, photo_url))
+      unmappedPhotoCollection.photo_ids.push( photo_id )
     };
   };
 
