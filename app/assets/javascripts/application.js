@@ -27,14 +27,18 @@ function MapToolWindow(tag, map_obj, map_name) {
 
 };
 
-function PhotoCollection() {
+function PhotoCollection(base_element_tag) {
   this.contents = [];
+  this.base = base_element_tag
   this.asList = function (){
     html = $( "<ul>" );
     for (var i = 0; i < this.contents.length; i++) {
       $( $( "<li>" ).append( this.contents[i].html ) ).appendTo(html);
     };
     return html;
+  };
+  this.update = function (){
+    $( this.base ).html( this.asList() )
   };
 };
 
@@ -48,11 +52,16 @@ function SelectedPhotoDiv(collection_photo) {
   this.html = $( $("<div>").append( collection_photo.html ) ).addClass("selected_photo_div")
 };
 
+function Selection() {
+  this.list = []
+};
 
-function MapWindow(map, markers, geoJSON){
+
+function MapWindow(map, markers, geoJSON, containers){
   this.map = map;
   this.markers = markers;
   this.geoJSON = geoJSON;
+  this.containers = containers
 
   resetMarkerColors = function(){
     for (var i = 0; i < geoJSON.features.length; i++) {
@@ -85,11 +94,14 @@ function MapWindow(map, markers, geoJSON){
       markers.setGeoJSON(geoJSON);
 
       $( "#photo" + prop['photo_id'] ).addClass('collection_photo_active');
-      $( "#selected_photos_container ul" ).append(
+
+      containers.select.contents.push(
         new SelectedPhotoDiv(
           new CollectionPhoto(prop.photo_id, prop.image)
-        ).html
+        )
       );
+
+     containers.select.update();
 
     });
 
@@ -115,8 +127,6 @@ function MapWindow(map, markers, geoJSON){
       enableMap();
     });
 
-    $(  )
-
   };
 };
 
@@ -137,9 +147,15 @@ $( window ).load( function() {
   });
 
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
-  var mappedPhotoCollection = new PhotoCollection();
-  var unmappedPhotoCollection = new PhotoCollection();
-  var selectedPhotoCollection = new PhotoCollection();
+
+  var mappedPhotoCollection = new PhotoCollection("#mapped_photos_container");
+  var unmappedPhotoCollection = new PhotoCollection("#unmapped_photos_container");
+  var selectedPhotoCollection = new PhotoCollection("#selected_photos_container");
+  var containers = {
+      "map" : mappedPhotoCollection,
+      "unmap" : unmappedPhotoCollection,
+      "select" : selectedPhotoCollection
+    }
 
   for (var i = 0; i < data.length; i++) {
     var photo_id = "photo" + data[i].properties.photo_id
@@ -152,14 +168,13 @@ $( window ).load( function() {
     };
   };
 
+  mappedPhotoCollection.update();
+  unmappedPhotoCollection.update();
+
   var markers = L.mapbox.featureLayer(geoJSON);
   markers.addTo(myMap);
   myMap.fitBounds(markers.getBounds());
-  var mapWindow = new MapWindow(myMap,markers,geoJSON);
-
-  $( "#mapped_photos_container" ).append( mappedPhotoCollection.asList() );
-  $( "#unmapped_photos_container" ).append( unmappedPhotoCollection.asList() );
-  $( "#selected_photos_container" ).append( selectedPhotoCollection.asList() );
+  var mapWindow = new MapWindow(myMap,markers,geoJSON, containers);
 
   $( "#showUnplaced" ).click(function() {
     unplaced = MapToolWindow("unplaced", myMap, "my_map")
