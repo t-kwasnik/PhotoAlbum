@@ -3,7 +3,7 @@ require "selenium-webdriver"
 
 feature 'user views photos', %Q{
 As a site visitor
-I want to be able to view all my photos
+I want to be able to view and select all my photos
 so I can manage them
 } do
 
@@ -35,8 +35,20 @@ so I can manage them
         expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
 
         expect{ page.find("#photo#{photo4.id}") }.to raise_error
-
         expect{ page.find("#photo#{photo5.id}") }.to raise_error
+    end
+
+    scenario 'user can make selection of one or more photos', js: true do
+        sign_in_as(user)
+
+        markers = all(".leaflet-marker-icon")
+
+        markers[0].click
+        expect( all(".selected_photo_div").count ).to eq(1)
+
+        markers = all(".leaflet-marker-icon")
+        markers[1].click
+        expect( all(".selected_photo_div").count ).to eq(2)
     end
 end
 

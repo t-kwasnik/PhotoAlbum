@@ -27,29 +27,40 @@ function MapToolWindow(tag, map_obj, map_name) {
 
 };
 
-function PhotoCollection() {
-  this.photos = [];
+function PhotoCollection(base_element_tag, header) {
+  this.header = header
+  this.photo_ids = []
+  this.contents = [];
+  this.base = base_element_tag
   this.asList = function (){
     html = $( "<ul>" );
-    for (var i = 0; i < this.photos.length; i++) {
-      this.photos[i].html.appendTo(html);
+    for (var i = 0; i < this.contents.length; i++) {
+      $( $( "<li>" ).append( this.contents[i].html ) ).appendTo(html);
     };
     return html;
-  }
-}
+  };
+  this.update = function (){
+    output = $( this.base ).html( $( "<h1>" ).html( this.header ) )
+    this.asList().appendTo( output )
+    output
+  };
+};
 
 function CollectionPhoto(photo_id, photo_url) {
   this.photo_id = photo_id;
   this.photo_url = photo_url;
-  this.html = $("<li>").append(
-                  $('<img />').attr({ class: 'collection_photo', 'id': this.photo_id, 'src': this.photo_url })
-                );
+  this.html = $('<img />').attr({ class: 'collection_photo', 'id': this.photo_id, 'src': this.photo_url });
 };
 
-function MapWindow(map, markers, geoJSON){
+function SelectedPhotoDiv(collection_photo) {
+  this.html = $( $("<div>").append( collection_photo.html ) ).addClass("selected_photo_div")
+};
+
+function MapWindow(map, markers, geoJSON, containers){
   this.map = map;
   this.markers = markers;
   this.geoJSON = geoJSON;
+  this.containers = containers
 
   resetMarkerColors = function(){
     for (var i = 0; i < geoJSON.features.length; i++) {
@@ -76,12 +87,21 @@ function MapWindow(map, markers, geoJSON){
 
   this.startListeners = function(){
     markers.on('click', function(e) {
-      resetMarkerColors();
       prop = e.layer.feature.properties
       prop['old-color'] = prop['marker-color'];
       prop['marker-color'] = '#B24926';
       markers.setGeoJSON(geoJSON);
+
       $( "#photo" + prop['photo_id'] ).addClass('collection_photo_active');
+
+      containers.select.photo_ids.push(prop.photo_id)
+      containers.select.contents.push(
+        new SelectedPhotoDiv(
+          new CollectionPhoto(prop.photo_id, prop.image)
+        )
+      );
+     containers.select.update();
+
     });
 
     map.on('click',resetMarkerColors);
@@ -126,26 +146,36 @@ $( window ).load( function() {
   });
 
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
-  var mappedPhotoCollection = new PhotoCollection();
-  var unmappedPhotoCollection = new PhotoCollection();
+
+  var mappedPhotoCollection = new PhotoCollection("#mapped_photos_container", "Mapped");
+  var unmappedPhotoCollection = new PhotoCollection("#unmapped_photos_container", "Unmapped");
+  var selectedPhotoCollection = new PhotoCollection("#selected_photos_container", "Selection");
+  var containers = {
+      "map" : mappedPhotoCollection,
+      "unmap" : unmappedPhotoCollection,
+      "select" : selectedPhotoCollection
+    }
 
   for (var i = 0; i < data.length; i++) {
     var photo_id = "photo" + data[i].properties.photo_id
     var photo_url = data[i].properties.image
     if ( data[i].type == "Feature" ) {
       geoJSON.features.push(data[i])
-      mappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url))
+      mappedPhotoCollection.photo_ids.push( photo_id )
+      mappedPhotoCollection.contents.push( new CollectionPhoto(photo_id, photo_url))
     } else if ( data[i].type == "Unmapped" ) {
-      unmappedPhotoCollection.photos.push( new CollectionPhoto(photo_id, photo_url))
+      unmappedPhotoCollection.contents.push( new CollectionPhoto(photo_id, photo_url))
+      unmappedPhotoCollection.photo_ids.push( photo_id )
     };
   };
+
+  mappedPhotoCollection.update();
+  unmappedPhotoCollection.update();
+
   var markers = L.mapbox.featureLayer(geoJSON);
   markers.addTo(myMap);
   myMap.fitBounds(markers.getBounds());
-  var mapWindow = new MapWindow(myMap,markers,geoJSON);
-
-  $( "#mapped_photos_container" ).append( mappedPhotoCollection.asList() );
-  $( "#unmapped_photos_container" ).append( unmappedPhotoCollection.asList() );
+  var mapWindow = new MapWindow(myMap,markers,geoJSON, containers);
 
   $( "#showUnplaced" ).click(function() {
     unplaced = MapToolWindow("unplaced", myMap, "my_map")

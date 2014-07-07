@@ -1,7 +1,7 @@
 <div id = "my_map" class = "enable_map">
   <div class='map_tool photo_container disable_map'>
-    <div id='mapped_photos_container' class='photo_group disable_map'>Mapped</div>
-    <div id='unmapped_photos_container' class='photo_group disable_map'>Unmapped</div>
+    <div id='mapped_photos_container' class='photo_group disable_map'></div>
+    <div id='unmapped_photos_container' class='photo_group disable_map'></div>
     <div id='unmapped_photos_container' class='photo_group disable_map'>
       <%= simple_form_for @new_photo do |f| %>
       <%= f.input :image, type: :file, :input_html => { :multiple => true }, label: false %>
@@ -13,7 +13,10 @@
   <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
 </div>
 
-<div id="my_maps_container">
+<div id="selected_photos_container" class="side_bar">
+</div>
+
+<div id="my_maps_container" class="side_bar">
   <ul>
     <li>
       <%= simple_form_for @new_my_map do |f| %>

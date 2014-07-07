@@ -36,7 +36,7 @@ class MyMapsController < ApplicationController
   def update
     @my_map = MyMap.find(params[:id])
 
-    if @my_map.user_id != current_user.id then redirect_to main_index_path end
+    if @my_map.user != current_user then redirect_to main_index_path end
 
     @my_map.attributes = my_map_params
 

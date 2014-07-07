@@ -31,6 +31,24 @@ li {
   white-space: normal;
 }
 
+#selected_photos_container {
+  color: white;
+  text-align: center;
+  min-height: 28%;
+  background-color: gray;
+}
+
+#selected_photos_container > h1 {
+  font-size: 14pt;
+}
+
+
+.side_bar{
+  width: 14%;
+  display: inline-block;
+  float: left;
+}
+
 #my_c_map_content_container {
   margin: 1em;
   height: 100%;
@@ -64,8 +82,8 @@ li {
     border-radius: 10px;
 }
 
-
 #my_map {
+  float: left;
   margin: 0px;
   padding: 0px;
   width: 85%;
@@ -116,13 +134,13 @@ li {
 }
 
 .collection_photo:hover {
-  max-height: 175px;
-  max-width: 175px;
+  max-height: 110px;
+  max-width: 110px;
 }
 
 .collection_photo_active {
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 130px;
+  max-height: 130px;
 }
 
 .map_tool {

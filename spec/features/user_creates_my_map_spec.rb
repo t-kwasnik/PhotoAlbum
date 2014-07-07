@@ -41,6 +41,7 @@ so I can categorize, document and share my mapped pictures
         expect(page).to_not have_content "My Second Map"
         expect(page).to_not have_content "Should not see this."
         expect( all("img").count ).to  eq(5)
+        binding.pry
     end
 
     scenario 'I must be logged in to see a my_map', js: true do
