@@ -4,6 +4,11 @@ class MyMapsController < ApplicationController
 
   before_filter :authenticate, except: :show
 
+  def index
+    @my_maps = MyMap.where(user: current_user)
+    respond_with(@my_maps)
+  end
+
   def show
     @my_map = compile_my_map(params[:id])
 

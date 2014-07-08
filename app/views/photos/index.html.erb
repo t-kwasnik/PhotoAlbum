@@ -13,22 +13,22 @@
   <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
 </div>
 
-<div id="selected_photos_container" class="side_bar">
-</div>
+<div class="side_bar">
+  <div id="selected_photos_container" ></div>
 
-<div id="my_maps_container" class="side_bar">
-  <ul>
-    <li>
-      <%= simple_form_for @new_my_map do |f| %>
-      <%= f.input :name, type: :string, label: "Name" %>
-      <%= f.button :submit, 'Create new map' %>
+  <div id="my_maps_container">
+    <ul>
+      <li>
+        <%= simple_form_for @new_my_map do |f| %>
+        <%= f.input :name, type: :string, label: "Name" %>
+        <%= f.button :submit, 'Create new map', class:  "button tiny" %>
+        <% end %>
+      </li>
+      <% @my_maps.each do |map| %>
+        <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
       <% end %>
-    </li>
-    <% @my_maps.each do |map| %>
-      <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
-    <% end %>
-  </ul>
+    </ul>
+  </div>
 </div>
-
 
 
