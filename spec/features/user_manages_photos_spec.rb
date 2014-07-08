@@ -15,7 +15,7 @@ so I can manage them
 # I must be able to view all photos placed on a map
 # I must be logged in to see my photos
 # I must be able to add photos to a selection
-# I must be able to add a selection to an existing map
+# I must be able to add a selection to an existing map, after selection is added it is cleared
 
 
     user = FactoryGirl.create(:user, email: "test@tets.com")
@@ -48,20 +48,21 @@ so I can manage them
     scenario 'user can make selection of one or more photos and add them to a map',js: true do
         sign_in_as(user)
 
-        markers = all(".leaflet-marker-icon")
-
-        markers[0].trigger('click')
+        all(".leaflet-marker-icon")[0].trigger('click')
+        expect( all(".selected_photo_div").count ).to eq(1)
+        # double clicking does not add to selection
+        all(".leaflet-marker-icon")[0].trigger('click')
         expect( all(".selected_photo_div").count ).to eq(1)
 
-        markers = all(".leaflet-marker-icon")
-        markers[1].trigger('click')
-
+        all(".leaflet-marker-icon")[1].trigger('click')
         expect( all(".selected_photo_div").count ).to eq(2)
 
         select "My First Map", from: "Add Selection to:"
 
         click_on "Add"
         sleep(5)
+        # selection is cleared after adding to a map
+        expect( all(".selected_photo_div").count ).to eq(0)
 
         click_on "My First Map"
         expect(page).to have_content "My First Map"
