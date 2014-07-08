@@ -45,6 +45,18 @@ so I can manage them
         expect{ page.find("#photo#{photo5.id}") }.to raise_error
     end
 
+    scenario 'user views information for each photo', js: true do
+        sign_in_as(user)
+
+        expect( match_url(page.find("#photo#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#photo#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
+
+        expect{ page.find("#photo#{photo4.id}") }.to raise_error
+        expect{ page.find("#photo#{photo5.id}") }.to raise_error
+    end
+
+
     scenario 'user can make selection of one or more photos and add them to a map',js: true do
         sign_in_as(user)
 

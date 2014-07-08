@@ -37,9 +37,8 @@ function MapWindow(map, markers, geoJSON, containers){
       markers.setGeoJSON( geoJSON );
 
       $( "#photo" + prop['photo_id'] ).addClass('collection_photo_active');
-
-      if ( !( prop.photo_id in containers.select.photo_ids ) &&
-          !( prop.photo_id == containers.select.photo_ids ) ) {
+      alert(containers.select.photo_ids);
+      if ( $.inArray( prop.photo_id, containers.select.photo_ids) == -1 ) {
         containers.select.photo_ids.push( prop.photo_id );
         containers.select.contents.push(
           new SelectedPhotoDiv(
