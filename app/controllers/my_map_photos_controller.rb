@@ -1,11 +1,23 @@
 class MyMapPhotosController < ApplicationController
+  respond_to :html, :json
   include ApplicationHelper
   before_filter :authenticate
+
+  def create
+    @my_map_photo = MyMapPhoto.new(my_map_photo_params)
+    @my_map_photo.my_map_id = params[:my_map_id]
+
+    if @my_map_photo.save
+      respond_to do |format|
+        format.json { render nothing: true }
+      end
+    end
+  end
 
   def update
     @my_map_photo = MyMapPhoto.find(params[:id])
 
-    if @my_map_photo.my_map.user_id != current_user.id then redirect_to main_index_path end
+    if @my_map_photo.my_map.user != current_user then redirect_to main_index_path end
 
     @my_map_photo.attributes = my_map_photo_params
 
@@ -18,6 +30,6 @@ class MyMapPhotosController < ApplicationController
   private
 
   def my_map_photo_params
-    params.required(:my_map_photo).permit( :id, :my_map_id, :name, :description )
+    params.required(:my_map_photo).permit( :my_map, :name, :description, :photo, :photo_id, :order )
   end
 end

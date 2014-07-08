@@ -12,8 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-
-//= require turbolinks
+//= require mapbox.js
 //= require_tree .
 //= require foundation
 
@@ -24,11 +23,11 @@ function MapToolWindow(tag, map_obj, map_name) {
   $("#"+ map_name).append('<div id="'+ tag +'" class="map_tool selection_window">A</div>')
   $(".selection_window").draggable({ containment: "parent" }).resizable();
   $(".selection_window").addClass("disable_map")
-
 };
 
 function PhotoCollection(base_element_tag, header) {
   this.header = header
+  this.footer = ""
   this.photo_ids = []
   this.contents = [];
   this.base = base_element_tag
@@ -40,8 +39,9 @@ function PhotoCollection(base_element_tag, header) {
     return html;
   };
   this.update = function (){
-    output = $( this.base ).html( $( "<h1>" ).html( this.header ) )
-    this.asList().appendTo( output )
+    output = $( this.base ).html( $( "<h1>" ).html( this.header ) );
+    this.asList().appendTo( output );
+    $( this.footer ).appendTo( output );
     output
   };
 };
@@ -55,6 +55,46 @@ function CollectionPhoto(photo_id, photo_url) {
 function SelectedPhotoDiv(collection_photo) {
   this.html = $( $("<div>").append( collection_photo.html ) ).addClass("selected_photo_div")
 };
+
+request = {
+  "getPhotos" : function() {
+    var data = ""
+    $.ajax({
+        url: '/photos.json',
+        dataType: 'json',
+        async: false,
+        success: function(d) {
+              data = d;
+        }
+    })
+    return data
+  },
+  "getMyMaps" : function() {
+    var data = ""
+    $.ajax({
+        url: '/my_maps.json',
+        dataType: 'json',
+        async: false,
+        success: function(d) {
+              data = d;
+        }
+    })
+    return data
+  },
+  "createMyMapPhoto" : function(map_id, photo_id) {
+    var response = false;
+    $.ajax({
+          type: "POST",
+          url: '/my_maps/' + map_id + '/my_map_photos',
+          data: { my_map_photo: {"photo_id": photo_id, "order": photo_id }},
+          async: false,
+          dataType: "json"
+     });
+    response = true;
+    return response;
+  }
+};
+
 
 function MapWindow(map, markers, geoJSON, containers){
   this.map = map;
@@ -100,7 +140,37 @@ function MapWindow(map, markers, geoJSON, containers){
           new CollectionPhoto(prop.photo_id, prop.image)
         )
       );
-     containers.select.update();
+
+
+    containers.select.footer = $( "<div>" )
+
+    $( "label")
+        .attr({ "for": "addSelectionToMapDropdown"})
+        .html("Add Selection to:")
+        .appendTo(containers.select.footer);
+
+    var selectMapDropDown = $("<select />").attr({"id":"addSelectionToMapDropdown", "name":"addSelectionToMapDropdown"});
+    var selectMapData = request.getMyMaps();
+    for (var i = 0; i < selectMapData.length; i++) {
+        $( $("<option>").attr({"name" : selectMapData[i].name, "value" : selectMapData[i].id })).html(selectMapData[i].name).appendTo(selectMapDropDown);
+    };
+
+    selectMapDropDown.appendTo( containers.select.footer );
+
+    $("<a>")
+      .attr({"id":"addSelectionToMapButton", "href":"#", "class":"button tiny"})
+      .html("Add")
+      .appendTo(containers.select.footer)
+      .click(function (event) {
+        event.preventDefault();
+        var value = $("#addSelectionToMapDropdown option:selected").val()
+        for (var i = 0; i < containers.select.contents.length; i++) {
+          if ( request.createMyMapPhoto(value, containers.select.photo_ids[i]) == false ) { return } ;
+        };
+      });
+
+    containers.select.update();
+
 
     });
 
@@ -130,20 +200,11 @@ function MapWindow(map, markers, geoJSON, containers){
 };
 
 
-$( window ).load( function() {
+$( document ).ready( function() {
 
   var myMap = L.mapbox.map('my_map', 'examples.map-i86nkdio', { zoomControl: false })
   new L.Control.Zoom({ position: 'bottomleft' }).addTo(myMap);
-  var data = {}
-
-  $.ajax({
-      url: '/photos.json',
-      dataType: 'json',
-      async: false,
-      success: function(d) {
-            data = d;
-      }
-  });
+  var data = request.getPhotos();
 
   var geoJSON = { "type" : "FeatureCollection", "features" : [] }
 

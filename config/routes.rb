@@ -6,10 +6,10 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :my_maps, only: [:show, :create, :edit, :update]
+  resources :my_maps, only: [:index, :show, :create, :edit, :update]
 
   resources :my_maps do
-    resources :my_map_photos, only: [:update]
+    resources :my_map_photos, only: [:update, :create]
   end
 
   resources :photos, only: [:index, :create]

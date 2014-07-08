@@ -1,5 +1,4 @@
 require 'rails_helper'
-require "selenium-webdriver"
 
 feature 'user creates my_map', %Q{
 As a site visitor
@@ -23,7 +22,7 @@ so I can categorize, document and share my mapped pictures
     user2 = FactoryGirl.create(:user)
     my_map_u2 = FactoryGirl.create(:my_map, user_id: user2.id, name: "Not Mine", description: "Should not see this.")
 
-    scenario 'home page shows all my_maps and only those that are mine', js: true do
+    scenario 'home page shows all my_maps and only those that are mine' do
         sign_in_as(user)
         visit photos_path
         expect(page).to have_content "My First Map"
@@ -31,7 +30,7 @@ so I can categorize, document and share my mapped pictures
         expect(page).to_not have_content "Not Mine"
     end
 
-    scenario 'my_map accessible from home page', js: true do
+    scenario 'my_map accessible from home page' do
         sign_in_as(user)
         visit photos_path
         click_on "My First Map"
@@ -40,15 +39,15 @@ so I can categorize, document and share my mapped pictures
         expect(page).to have_content "Description"
         expect(page).to_not have_content "My Second Map"
         expect(page).to_not have_content "Should not see this."
-        expect( all("img").count ).to  eq(5)
+        expect( all(".c_map_content").count ).to  eq(5)
     end
 
-    scenario 'I must be logged in to see a my_map', js: true do
+    scenario 'I must be logged in to see a my_map' do
         visit my_map_path(my_map.id)
         expect(page).to have_content "You need to sign in first."
     end
 
-    scenario 'create and be redirection to a my map from home page', js: true do
+    scenario 'create and be redirection to a my map from home page' do
         sign_in_as(user)
         visit photos_path
         fill_in "Name", with: "Cool Places"

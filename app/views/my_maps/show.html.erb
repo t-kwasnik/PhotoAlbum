@@ -1,5 +1,6 @@
-<div id="my_map" class="my_custom_map">
-  <div id="my_c_map_content_container" class="disable_map">
+<div id="my_map" class="my_custom_map"></div>
+
+<div id="my_c_map_content_container" class="disable_map">
     <ul class="disable_map">
       <li><h1><%= @my_map["name"] %></h1></li>
       <li><span><%= @my_map["description"] %></span></li>
@@ -15,4 +16,4 @@
       <li><%= link_to "Edit this map.", edit_my_map_path(@my_map) if current_user %></li>
     </ul>
   </div>
-</div>
+

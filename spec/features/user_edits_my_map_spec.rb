@@ -1,5 +1,4 @@
 require 'rails_helper'
-require "selenium-webdriver"
 
 feature 'user edits a my_map', %Q{
 As a site visitor
@@ -25,12 +24,12 @@ so I can change the names and descriptions of the map and it's photos
     my_map2 = FactoryGirl.create( :my_map, user_id: user2.id )
     my_map_photos2 = FactoryGirl.create_list( :my_map_photo, 3, my_map_id: my_map2.id )
 
-    scenario 'must log in to see a my_map by default', js: true do
+    scenario 'must log in to see a my_map by default' do
         visit edit_my_map_path(my_map.id)
         expect(page).to have_content "You need to sign in first."
     end
 
-    scenario 'edit page is accessible through links from user home', js: true do
+    scenario 'edit page is accessible through links from user home' do
         sign_in_as(user)
         click_on "My Awesome Map"
         click_on "Edit this map."
@@ -48,7 +47,7 @@ so I can change the names and descriptions of the map and it's photos
         expect(page).to have_content "Done with Changes"
     end
 
-    scenario 'name and description for map and each photo are editable', js: true do
+    scenario 'name and description for map and each photo are editable' do
         sign_in_as(user)
         visit edit_my_map_path(my_map.id)
 
@@ -79,7 +78,7 @@ so I can change the names and descriptions of the map and it's photos
         end
     end
 
-    scenario 'user can choose to make a map public from its page', js: true do
+    scenario 'user can choose to make a map public from its page' do
         sign_in_as(user)
         visit edit_my_map_path(my_map.id)
 
