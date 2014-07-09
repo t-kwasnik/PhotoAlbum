@@ -5,18 +5,17 @@ class PhotosController < ApplicationController
   before_filter :authenticate
 
   def index
-
     @my_maps = MyMap.where( user_id: current_user )
-
     @new_photo = Photo.new
     @new_my_map = MyMap.new
+    @photos = Photo.where( user_id: current_user )
 
-    @photo_collection = []
-    Photo.where( user_id: current_user ).each do |photo|
-      @photo_collection << geoJSON(photo.geom, { photo_id: photo.id, image: photo.image_url(:med), placename: photo.placename })
-    end
+    respond_with @photos, each_serializer: GeojsonSerializer
+  end
 
-    respond_with(@photo_collection)
+  def show
+    @photo = Photo.find( params[:id] )
+    respond_with @photo
   end
 
   def create
@@ -59,7 +58,11 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.required(:photo).permit(image:[])
+    params.required(:photo).permit( image:[] )
+  end
+
+  def default_serializer_options
+    { root: false }
   end
 
 end

@@ -11,6 +11,18 @@ request = {
     })
     return data
   },
+  "getPhoto" : function( photo_id ) {
+    var data = ""
+    $.ajax({
+        url: '/photos/'+ photo_id + '.json',
+        dataType: 'json',
+        async: false,
+        success: function(d) {
+              data = d;
+        }
+    })
+    return data
+  },
   "getMyMaps" : function() {
     var data = ""
     $.ajax({

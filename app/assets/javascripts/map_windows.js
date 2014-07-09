@@ -5,76 +5,72 @@ function MapToolWindow(tag, map_obj, map_name) {
 };
 
 function PhotoCollection(base_element_tag, header) {
-  this.main = this
-  this.header = header
-  this.footer = ""
-  this.photo_ids = []
+  this.main = this;
+  this.base = base_element_tag;
+  this.header = $( "<h1></h1>" ).html( header );
+  this.footer = "";
   this.contents = [];
-  this.base = base_element_tag
+  this.startListeners = function(){};
+  this.photo_ids = function(){
+      array = [];
+      for (var i = 0; i < this.contents.length; i++) {
+        array.push( this.contents[i].photo_id );
+      };
+      return array
+  };
   this.asList = function (){
     html = $( "<ul>" );
     for (var i = 0; i < this.contents.length; i++) {
-      $( $( "<li>" ).append( this.contents[i].html ) ).appendTo(html);
+      $( $( "<li>" ).append( this.contents[i].html() ) ).appendTo(html);
     };
     return html;
   };
+  this.main_body = this.asList;
   this.update = function (){
-    output = $( this.main.base ).html( $( "<h1>" ).html( this.main.header ) );
-    this.main.asList().appendTo( output );
+    output = $( this.main.base ).html(" ");
+    $( this.main.header ).appendTo( output );
+    this.main_body().appendTo( output );
     $( this.main.footer ).appendTo( output );
-    output
+    this.main.startListeners();
+    return output
   };
   this.clear_photos = function() {
-    this.photo_ids = [];
     this.contents = [];
-    this.main.update(this.main)
+    return this.main.update(this.main);
+
   };
-  this.clear_contents = function() {
-    this.photo_ids = [];
-    this.contents = [];
+  this.clear_footer = function() {
     this.main.footer = "";
-    this.main.update(this.main)
+    return this.main.update( this.main );
   };
 };
 
-function updateSelectionFooter(select_container) {
-    select_container.footer = $( "<div>" )
 
-    $( "label")
-        .attr({ "for": "addSelectionToMapDropdown"})
-        .html("Add Selection to:")
-        .appendTo(select_container.footer);
-
-    var selectMapDropDown = $("<select />").attr({"id":"addSelectionToMapDropdown", "name":"addSelectionToMapDropdown"});
-    var selectMapData = request.getMyMaps();
-    for (var i = 0; i < selectMapData.length; i++) {
-        $( $("<option>").attr({"name" : selectMapData[i].name, "value" : selectMapData[i].id })).html(selectMapData[i].name).appendTo(selectMapDropDown);
-    };
-
-    selectMapDropDown.appendTo( select_container.footer );
-
-    $("<a>")
-      .attr({"id":"addSelectionToMapButton", "href":"#", "class":"button tiny"})
-      .html("Add")
-      .appendTo(select_container.footer)
-      .click(function (event) {
-        event.preventDefault();
-        var value = $("#addSelectionToMapDropdown option:selected").val()
-        for (var i = 0; i < select_container.contents.length; i++) {
-          if ( request.createMyMapPhoto(value, select_container.photo_ids[i]) == false ) { return } ;
-        };
-        select_container.clear_contents();
-      });
-
-    select_container.update();
-  };
-
-function CollectionPhoto(photo_id, photo_url) {
+function CollectionPhoto( photo_id, photo_url, header ) {
+  this.header = header
   this.photo_id = photo_id;
   this.photo_url = photo_url;
-  this.html = $('<img />').attr({ class: 'collection_photo', 'id': this.photo_id, 'src': this.photo_url });
-};
+  this.info_fields = {"description" : "Description", "placename" : "Location" }
+  this.attr = function() {
+    return request.getPhoto( this.photo_id );
+  };
+  this.image = function() {
+    return $('<img />').attr({ class: 'collection_photo', 'id': this.header + "_" + this.photo_id, 'src': this.photo_url })
+  };
+  this.html = this.image;
+  this.in_div = function() {
+    return $( $("<div>").append( this.image() ) )
+  };
+  this.in_info_div = function() {
+    data = this.attr();
+    base = $("<div>");
+    base.append( $("<h1>").html( data.name ) );
+    this.photo_url = data.image.image.med.url
+    base.append( this.image() );
+    for (var field in this.info_fields) {
+      base.append( $("<span>").html( this.info_fields[field] + ": " + data[field] ) );
+    };
+    return base;
+  };
 
-function SelectedPhotoDiv(collection_photo) {
-  this.html = $( $("<div>").append( collection_photo.html ) ).addClass("selected_photo_div")
 };

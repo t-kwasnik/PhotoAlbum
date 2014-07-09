@@ -6,6 +6,7 @@ gem 'rgeo-activerecord'
 gem 'rgeo-geojson'
 gem 'rgeo'
 gem 'mapbox-rails'
+gem 'active_model_serializers'
 
 gem 'foundation-rails'
 gem 'carrierwave'

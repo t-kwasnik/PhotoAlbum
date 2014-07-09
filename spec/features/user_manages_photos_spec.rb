@@ -45,15 +45,26 @@ so I can manage them
         expect{ page.find("#photo#{photo5.id}") }.to raise_error
     end
 
+
     scenario 'user views information for each photo', js: true do
         sign_in_as(user)
+        all(".leaflet-marker-icon")[0].trigger('click')
+        expect( page ).to have_content "1 of 1"
+        expect( page ).to have_content "Location"
+        expect( page ).to have_content "Description"
+        expect( page ).to have_content photo.image_name
 
-        expect( match_url(page.find("#photo#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
+        all(".leaflet-marker-icon")[1].trigger('click')
+        expect( page ).to have_content "1 of 2"
+        expect( page ).to have_content photo.image_name
+        click_on "Next"
 
-        expect{ page.find("#photo#{photo4.id}") }.to raise_error
-        expect{ page.find("#photo#{photo5.id}") }.to raise_error
+        expect( page ).to have_content "2 of 2"
+        expect( page ).to have_content photo2.image_name
+
+        click_on "Previous"
+        expect( page ).to have_content "1 of 2"
+        expect( page ).to have_content photo.image_name
     end
 
 
