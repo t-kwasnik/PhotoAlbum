@@ -37,12 +37,12 @@ so I can manage them
     scenario 'user views all of own mappable and unmappable photos', js: true do
         sign_in_as(user)
 
-        expect( match_url(page.find("#photo#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#map_#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#map_#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#unmap_#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
 
-        expect{ page.find("#photo#{photo4.id}") }.to raise_error
-        expect{ page.find("#photo#{photo5.id}") }.to raise_error
+        expect{ page.find("#map#{photo4.id}") }.to raise_error
+        expect{ page.find("#unmap#{photo5.id}") }.to raise_error
     end
 
 

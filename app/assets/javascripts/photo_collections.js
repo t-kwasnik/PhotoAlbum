@@ -18,14 +18,14 @@ function PhotoCollection(base_element_tag, header) {
       };
       return array
   };
-  this.asList = function (){
+  this.defaultFormat = function (){
     html = $( "<ul>" );
     for (var i = 0; i < this.contents.length; i++) {
       $( $( "<li>" ).append( this.contents[i].html() ) ).appendTo(html);
     };
     return html;
   };
-  this.main_body = this.asList;
+  this.main_body = this.defaultFormat;
   this.update = function (){
     output = $( this.main.base ).html(" ");
     $( this.main.header ).appendTo( output );
@@ -50,7 +50,6 @@ function CollectionPhoto( photo_id, photo_url, header ) {
   this.header = header
   this.photo_id = photo_id;
   this.photo_url = photo_url;
-  this.info_fields = {"description" : "Description", "placename" : "Location" }
   this.attr = function() {
     return request.getPhoto( this.photo_id );
   };
@@ -58,19 +57,6 @@ function CollectionPhoto( photo_id, photo_url, header ) {
     return $('<img />').attr({ class: 'collection_photo', 'id': this.header + "_" + this.photo_id, 'src': this.photo_url })
   };
   this.html = this.image;
-  this.in_div = function() {
-    return $( $("<div>").append( this.image() ) )
-  };
-  this.in_info_div = function() {
-    data = this.attr();
-    base = $("<div>");
-    base.append( $("<h1>").html( data.name ) );
-    this.photo_url = data.image.image.med.url
-    base.append( this.image() );
-    for (var field in this.info_fields) {
-      base.append( $("<span>").html( this.info_fields[field] + ": " + data[field] ) );
-    };
-    return base;
-  };
+
 
 };
