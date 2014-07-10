@@ -5,7 +5,7 @@
     <div id='unmapped_photos_container' class='photo_group disable_map'>
       <%= simple_form_for @new_photo do |f| %>
       <%= f.input :image, type: :file, :input_html => { :multiple => true }, label: false %>
-      <%= f.button :submit, 'Map them!' %>
+      <%= f.button :submit, 'Map them!', :id => "MapNewPhotos" %>
       <% end %>
     </div>
   </div>
