@@ -21,9 +21,9 @@ $( document ).ready( function() {
     var photo_url = data[i].properties.image
     if ( data[i].type == "Feature" ) {
       geoJSON.features.push(data[i])
-      containers.map.contents.push( new CollectionPhoto(photo_id, photo_url, containers.map.header))
+      containers.map.contents.push( new CollectionPhoto(photo_id, photo_url, containers.map.name))
     } else if ( data[i].type == "Unmapped" ) {
-      containers.unmap.contents.push( new CollectionPhoto(photo_id, photo_url, containers.unmap.header))
+      containers.unmap.contents.push( new CollectionPhoto(photo_id, photo_url, containers.unmap.name))
     };
   };
   containers.map.update();
@@ -46,7 +46,7 @@ $( document ).ready( function() {
     $( "#photo" + prop['photo_id'] ).addClass('collection_photo_active');
 
     if ( $.inArray( prop.photo_id, containers.select.photo_ids()) == -1 ) {
-      var new_photo = new CollectionPhoto( prop.photo_id, prop.image, containers.select.header )
+      var new_photo = new CollectionPhoto( prop.photo_id, prop.image, containers.select.name )
       containers.select.contents.push( new_photo );
       containers.select.update()
     };

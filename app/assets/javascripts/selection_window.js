@@ -1,7 +1,7 @@
-function populateSelectionWindow(container) {
+function populateSelectionWindow( container ) {
   container.header.append( selectionViewToggle() );
   container.startListeners = selectionListeners;
-  setSelectionWindowAll( container );
+  setSelectionWindowDetail( container );
   container.update();
   return container;
 }
@@ -37,78 +37,91 @@ function selectionViewToggle() {
   return output
 }
 
-function setSelectionWindowAll(container) {
+function setSelectionWindowAll( container ) {
   container.footer = mapSelectionDropdown(container);
   container.main_body = selectionWindowAllFormat
   return container.update();
 }
 
 function selectionWindowAllFormat() {
+  var container = this
   var list = $( "<ul>" );
   for (var i = 0; i < this.contents.length; i++) {
-    this.contents[i].html()
-      .appendTo( $( "<div>" ).addClass("selected_photo_div"))
-      .appendTo( $( "<li>" ) )
-      .appendTo( list );
+    var image = container.contents[i].html()
+    var div = $("<div>").addClass( this.name + "_div")
+    list.append( $( "<li>" ).html( div.append( image ) ) )
   };
   var div = $("<div>").append( $("<span>").html( this.contents.length + " Total" ));
   list.appendTo( div )
   return div;
   };
 
-function setSelectionWindowDetail() {
+function setSelectionWindowDetail( container ) {
   container.footer = "";
   container.main_body = selectionWindowDetailFormat
   return container.update();
 }
 
 function selectionWindowDetailFormat() {
+  var container = this
+  var infoDiv = $( "<div>" )
   var infoList = $( "<ul>" )
   var infoFields = { "description" : "Description", "placename" : "Location" }
+  if ( this.contents.length != 0 ) {
+    for (var i = 0; i < this.contents.length; i++) {
+      var base = $("<div>").addClass( this.name + "_div");
+      data = request.getPhoto(this.contents[i].photo_id)
+      base.append( $("<span>").html( ( i + 1 )  + " of " + this.contents.length ) );
+      base.append( $("<h1>").html( data.name ) );
+      base.append( $("<img>").attr("src", data.image.image.med.url ) );
+      for (var field in infoFields) {
+        base.append( $("<span>").html( infoFields[field] + ": " + data[field] + "<br>") );
+      };
 
-  for (var i = 0; i < this.contents.length; i++) {
-    var base = $("<div>").addClass("selected_photo_div");
-    data = request.getPhoto(this.contents[i].photo_id)
-    base.append( $("<span>").html( ( i + 1 )  + " of " + this.contents.length ) );
-    base.append( $("<h1>").html( data.name ) );
-    base.append( $("<img>").attr("src", data.image.image.med.url ) );
-    for (var field in infoFields) {
-      base.append( $("<span>").html( infoFields[field] + ": " + data[field] + "<br>") );
+      related_maps = []
+      for (var ii = 0; ii < data.related_maps.length; ii++) {
+        related_maps.push( data.related_maps[ii].name )
+      };
+
+      base.append( $("<span>").html( "In Maps: " + related_maps.join(", ") + "<br>") );
+
+      if ( i == this.active_content ) {
+        result = $( $("<li>").append(base) ).addClass("focusSelectionWindow")
+      } else {
+        result = $( $("<li>").append(base) ).hide()
+      }
+
+      infoList.append( result );
     };
-
-    related_maps = []
-    for (var ii = 0; ii < data.related_maps.length; ii++) {
-      related_maps.push( data.related_maps[ii].name )
-    };
-
-    base.append( $("<span>").html( "In Maps: " + related_maps.join(", ") + "<br>") );
-
-    if ( i == this.contents.length - 1 ) {
-      result = $( $("<li>").append(base) ).addClass("focusSelectionWindow")
-    } else {
-      result = $( $("<li>").append(base) ).hide()
-    }
-
-    infoList.append( result );
   };
 
-  infoList.append(
-    $("<span>").html("Previous")
-      .click(function() {
-        if($("li.focusSelectionWindow").prev().length > 0)
+  infoDiv.append( infoList )
+
+  infoDiv.append(
+    $("<a>").html("Previous")
+      .attr({"id":"selectionDetailPrevious", "href":"#", "class":"button tiny"})
+      .click(function(event) {
+        event.preventDefault();
+        if ($("li.focusSelectionWindow").prev().length > 0)
           { $("li.focusSelectionWindow").removeClass("focusSelectionWindow").hide()
-              .prev("li").addClass("focusSelectionWindow").show() } })
+              .prev("li").addClass("focusSelectionWindow").show() };
+        container.active_content--;
+      })
     );
 
-  infoList.append(
-    $("<span>").html("Next")
-      .click(function() {
-        if($("li.focusSelectionWindow").next().length > 0)
+  infoDiv.append(
+    $("<a>").html("Next")
+      .attr({"id":"selectionDetailNext", "href":"#", "class":"button tiny"})
+      .click(function(event) {
+        event.preventDefault();
+        if ($("li.focusSelectionWindow").next().length > 0)
           {$("li.focusSelectionWindow").removeClass("focusSelectionWindow").hide()
-              .next("li").addClass("focusSelectionWindow").show()} })
+              .next("li").addClass("focusSelectionWindow").show()};
+      container.active_content++;
+      })
     );
 
-  return infoList;
+  return infoDiv;
 };
 
 function mapSelectionDropdown( container ) {

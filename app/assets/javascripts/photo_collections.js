@@ -5,11 +5,13 @@ function MapToolWindow(tag, map_obj, map_name) {
 };
 
 function PhotoCollection(base_element_tag, header) {
+  this.name = header;
   this.main = this;
   this.base = base_element_tag;
   this.header = $( "<h1></h1>" ).html( header );
   this.footer = "";
   this.contents = [];
+  this.active_content = 0;
   this.startListeners = function(){};
   this.photo_ids = function(){
       array = [];
