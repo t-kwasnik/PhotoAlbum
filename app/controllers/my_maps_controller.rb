@@ -10,7 +10,8 @@ class MyMapsController < ApplicationController
   end
 
   def show
-    @my_map = compile_my_map(params[:id])
+    @my_map = MyMap.find(params[:id])
+    @my_map_photos = @my_map.my_map_photos
 
     public_map = @my_map["is_public"]
 
@@ -54,5 +55,9 @@ class MyMapsController < ApplicationController
 
   def my_map_params
     params.required(:my_map).permit( :id, :name, :description, :is_public )
+  end
+
+  def default_serializer_options
+    { root: false }
   end
 end

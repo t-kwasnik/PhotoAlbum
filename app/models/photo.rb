@@ -1,3 +1,5 @@
+include ApplicationHelper
+
 class Photo < ActiveRecord::Base
   belongs_to :user
   has_many :photo_tags
@@ -16,5 +18,16 @@ class Photo < ActiveRecord::Base
   mount_uploader :image, PhotoUploader
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
+
+  attr_reader :related_maps, :type, :geometry, :properties, :geojson
+
+
+  def related_maps
+    @my_maps = self.my_maps.map { |obj| { name: obj["name"], id: obj["id"] } }  if self.my_maps
+  end
+
+  def properties
+    { photo_id: self.id, image: self.image_url(:med), placename: self.placename }
+  end
 
 end

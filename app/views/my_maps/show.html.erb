@@ -4,7 +4,7 @@
     <ul class="disable_map">
       <li><h1><%= @my_map["name"] %></h1></li>
       <li><span><%= @my_map["description"] %></span></li>
-      <% @my_map["photos"].each do |p| %>
+      <% @my_map_photos.each do |p| %>
         <li>
           <div class="c_map_content">
             <h4><%= p.name %></h4>

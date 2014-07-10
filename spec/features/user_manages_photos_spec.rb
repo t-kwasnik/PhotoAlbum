@@ -37,32 +37,78 @@ so I can manage them
     scenario 'user views all of own mappable and unmappable photos', js: true do
         sign_in_as(user)
 
-        expect( match_url(page.find("#photo#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
-        expect( match_url(page.find("#photo#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#Mapped_#{photo.id}")['src'], photo.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#Mapped_#{photo2.id}")['src'], photo2.image_url(:med)) ).to eq(true)
+        expect( match_url(page.find("#Unmapped_#{photo3.id}")['src'], photo3.image_url(:med)) ).to eq(true)
 
-        expect{ page.find("#photo#{photo4.id}") }.to raise_error
-        expect{ page.find("#photo#{photo5.id}") }.to raise_error
+        expect{ page.find("#Mapped_#{photo4.id}") }.to raise_error
+        expect{ page.find("#Unmapped_#{photo5.id}") }.to raise_error
     end
+
+
+    scenario 'user views information for each photo', js: true do
+        sign_in_as(user)
+        # clicking marker adds photo to selection ( Detail view by default )
+        all(".leaflet-marker-icon")[0].trigger('click')
+        expect( page ).to have_content "1 of 1"
+        expect( page ).to have_content "Location"
+        expect( page ).to have_content "Description"
+        expect( page ).to have_content photo.placename
+        expect( page ).to have_content photo.description
+        expect( all(".Selection_div").count ).to eq(1)
+
+        #double clicking does not add photo again
+        all(".leaflet-marker-icon")[0].trigger('click')
+        expect( page ).to have_content "1 of 1"
+        expect( all(".Selection_div").count ).to eq(1)
+
+        # adding marker does not update the selection window
+        all(".leaflet-marker-icon")[1].trigger('click')
+        expect( all(".Selection_div").count ).to eq(1)
+        expect( page ).to have_content "1 of 2"
+        expect( page ).to have_content photo.placename
+        expect( page ).to have_content photo.description
+
+        # all marker info accessible by clicking next/previous
+        all("#selectionDetailNext")[0].trigger('click')
+        expect( page ).to have_content "2 of 2"
+        expect( page ).to have_content photo2.placename
+        expect( page ).to have_content photo2.description
+
+        all("#selectionDetailPrevious")[0].trigger('click')
+        expect( page ).to have_content "1 of 2"
+        expect( page ).to have_content photo.placename
+        expect( page ).to have_content photo.description
+
+        # clicking All button switches view to show all photos, switching back remembers the last photo you were looking at
+        all("#selectionDetailNext")[0].trigger('click')
+        click_on "All"
+        expect( all(".Selection_div").count ).to eq(2)
+
+        click_on "Detail"
+        expect( page ).to have_content "2 of 2"
+        expect( page ).to have_content photo2.placename
+        expect( page ).to have_content photo2.description
+        expect( all(".Selection_div").count ).to eq(1)
+    end
+
 
     scenario 'user can make selection of one or more photos and add them to a map',js: true do
         sign_in_as(user)
 
         all(".leaflet-marker-icon")[0].trigger('click')
-        expect( all(".selected_photo_div").count ).to eq(1)
-        # double clicking does not add to selection
-        all(".leaflet-marker-icon")[0].trigger('click')
-        expect( all(".selected_photo_div").count ).to eq(1)
-
         all(".leaflet-marker-icon")[1].trigger('click')
-        expect( all(".selected_photo_div").count ).to eq(2)
+
+        # all selected photos are viewable on from the All button
+        click_on "All"
+        expect( all(".Selection_div").count ).to eq(2)
 
         select "My First Map", from: "Add Selection to:"
 
         click_on "Add"
         sleep(5)
         # selection is cleared after adding to a map
-        expect( all(".selected_photo_div").count ).to eq(0)
+        expect( all(".Selection_div").count ).to eq(0)
 
         click_on "My First Map"
         expect(page).to have_content "My First Map"

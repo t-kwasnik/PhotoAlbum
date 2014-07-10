@@ -30,6 +30,6 @@ class MyMapPhotosController < ApplicationController
   private
 
   def my_map_photo_params
-    params.required(:my_map_photo).permit( :my_map, :name, :description, :photo, :photo_id, :order )
+    params.required(:my_map_photo).permit( :my_map, :name, :description, :photo_id, :order )
   end
 end
