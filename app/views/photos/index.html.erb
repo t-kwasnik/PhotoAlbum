@@ -1,13 +1,8 @@
-<div id = "my_map" class = "enable_map">
-  <div class='map_tool photo_container disable_map'>
-    <div id='mapped_photos_container' class='photo_group disable_map'></div>
-    <div id='unmapped_photos_container' class='photo_group disable_map'></div>
-    <div id='unmapped_photos_container' class='photo_group disable_map'>
-      <%= simple_form_for @new_photo do |f| %>
-      <%= f.input :image, type: :file, :input_html => { :multiple => true }, label: false %>
-      <%= f.button :submit, 'Map them!', :id => "MapNewPhotos" %>
-      <% end %>
-    </div>
+<div id = "photos_map" class = "enable_map">
+  <div class='map_tool photo_bar disable_map'>
+    <div id='mapped_photos_container' class='photo_collection disable_map'></div>
+    <div id='unmapped_photos_container' class='photo_collection disable_map'></div>
+    <div id='unmapped_photos_container' class='photo_collection disable_map'></div>
   </div>
 
   <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
@@ -28,7 +23,17 @@
         <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
       <% end %>
     </ul>
+    <form id="UploadNewPhotos" action="<%= photos_path %>" method="POST">
+      <input type="file" id="photosToMap" name="photos[]" multiple/>
+      <button type="submit" id="MapNewPhotos">Map them!</button>
+    </form>
   </div>
 </div>
+
+<%= javascript_tag do %>
+  $( document ).ready( loadPhotosView() )
+<% end %>
+
+
 
 

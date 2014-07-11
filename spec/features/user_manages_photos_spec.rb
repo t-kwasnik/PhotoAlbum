@@ -120,7 +120,7 @@ so I can manage them
      scenario 'user can make selection of one or more photos and add them to a map',js: true do
         sign_in_as(user)
         count = all(".leaflet-marker-icon").count
-        page.attach_file "photo[image][]", ["#{Rails.root}/app/assets/images/test1.jpg", "#{Rails.root}/app/assets/images/test2.jpg"]
+        page.attach_file "photos[]", ["#{Rails.root}/app/assets/images/test1.jpg", "#{Rails.root}/app/assets/images/test2.jpg"]
         all("#MapNewPhotos")[0].trigger('click')
 
         sleep(20)

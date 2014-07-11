@@ -1,10 +1,19 @@
-function MapToolWindow(tag, map_obj, map_name) {
+function MapToolWindow(tag, map_name) {
   $("#"+ map_name).append('<div id="'+ tag +'" class="map_tool selection_window">A</div>')
   $(".selection_window").draggable({ containment: "parent" }).resizable();
   $(".selection_window").addClass("disable_map")
 };
 
-function PhotoCollection(base_element_tag, header) {
+function MapLayer() {
+  this.geoJSON = { "type" : "FeatureCollection", "features" : [] };
+  this.layer = L.mapbox.featureLayer( this.geoJSON );
+  this.insert = function( photoGeoJSON ) {
+    this.geoJSON.features.push( photoGeoJSON );
+    this.output = this.layer.setGeoJSON( this.geoJSON );
+  };
+}
+
+function Container(base_element_tag, header) {
   this.name = header;
   this.main = this;
   this.base = base_element_tag;

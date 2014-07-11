@@ -148,7 +148,7 @@ function mapSelectionDropdown( container ) {
         event.preventDefault();
         var value = $("#addSelectionToMapDropdown option:selected").val()
         for (var i = 0; i < container.contents.length; i++) {
-          if ( request.createMyMapPhoto(value, container.photo_ids()[i]) == false ) { return } ;
+          var myMapPhoto = request.createMyMapPhoto(value, container.photo_ids()[i] );
         };
         container.clear_photos();
       });
