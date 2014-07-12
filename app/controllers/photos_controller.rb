@@ -18,6 +18,7 @@ class PhotosController < ApplicationController
   end
 
   def create
+    # binding.pry
     @photo = Photo.new( photo_params )
     @photo.user = current_user
 
@@ -36,13 +37,25 @@ class PhotosController < ApplicationController
 
         JSON.parse(res.body)["results"].each do |results|
           results.each do |result|
-            # if result["type"] == "city"
-            #   @photo.city = result["name"]
-            # elsif result["type"] == "province"
-            #   @photo.state = result["name"]
-            # elsif result["type"] == "country"
-            #   @photo.country = result["name"]
-            # end
+             if result["type"] == "city"
+                if City.where( name: result["name"] ).empty?
+                  @photo.city = City.create( name: result["name"] )
+                else
+                  @photo.city = City.where( name: result["name"] ).first
+                end
+             elsif result["type"] == "province"
+              if State.where( name: result["name"] ).empty?
+                  @photo.state = State.create( name: result["name"] )
+                else
+                  @photo.state = State.where( name: result["name"] ).first
+                end
+             elsif result["type"] == "country"
+               if Country.where( name: result["name"] ).empty?
+                  @photo.country = Country.create( name: result["name"] )
+                else
+                  @photo.country = Country.where( name: result["name"] ).first
+                end
+             end
           end
         end
       end

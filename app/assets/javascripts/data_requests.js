@@ -35,17 +35,20 @@ request = {
     })
     return data
   },
-  "createPhoto" : function(formData) {
+  "createPhoto" : function(formData, view, update_container) {
     var data = "";
     $.ajax({
             url: '/photos',  //Server script to process data
             type: 'POST',
             data: formData,
-            async: false,
+            async: true,
             //Options to tell jQuery not to process data or worry about content-type.
             cache: false,
-            success: function(d) {
-              data = d;
+            success: function(data) {
+              parseNewPhoto(view, data);
+              for(var i = 0; i < update_container; i++ ) {
+                view.containers[update_container[i]].update();
+              };
             },
             contentType: false,
             processData: false

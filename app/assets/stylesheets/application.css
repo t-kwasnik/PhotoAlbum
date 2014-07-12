@@ -122,6 +122,7 @@ li {
 
 
 .photo_bar {
+  width: 100%;
   max-width: 100%;
   background-color: rgba(255,255,255,.7);
   border-radius: 3px;
@@ -134,8 +135,8 @@ li {
 
 .photo_collection {
   min-width: 25%;
-  max-width: 70%;
-  margin: 1em;
+  max-width: 48%;
+  margin: .75%;
   background-color: rgba(255,255,255,.7);
   min-width: none;
   height: 100%;

@@ -62,22 +62,13 @@ function loadPhotosView() {
 
   $( "#MapNewPhotos" ).click( function(event) {
       event.preventDefault();
-      // var worker =  new Worker('/workers/loadPhotosWorker.js');
       var files = document.getElementById('photosToMap').files;
       var formData = new FormData();
       for (var i = 0; i < files.length; i++) {
         var formData = new FormData();
         var file = files[i];
         formData.append('photo[image]', file, file.name);
-        serverResult = request.createPhoto(formData);
-        if ( serverResult != false ) {
-          parseNewPhoto( photosView, serverResult )
-        }
+        request.createPhoto(formData, photosView, ["map", "unmap"]);
       };
-
-      // worker.addEventListener('message', function(e) {
-      //   console.log('Worker said: ', e.data);
-      // }, false);
-      // worker.postMessage(files);
     });
 }
