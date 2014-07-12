@@ -66,7 +66,7 @@ function selectionWindowDetailFormat() {
   var container = this
   var infoDiv = $( "<div>" )
   var infoList = $( "<ul>" )
-  var infoFields = { "description" : "Description", "placename" : "Location" }
+  var infoFields = { "description" : "Description", "placename" : "Place", "location" : "Location" }
   if ( this.contents.length != 0 ) {
     for (var i = 0; i < this.contents.length; i++) {
       var base = $("<div>").addClass( this.name + "_div");
@@ -74,6 +74,7 @@ function selectionWindowDetailFormat() {
       base.append( $("<span>").html( ( i + 1 )  + " of " + this.contents.length ) );
       base.append( $("<h1>").html( data.name ) );
       base.append( $("<img>").attr("src", data.image.image.med.url ) );
+
       for (var field in infoFields) {
         base.append( $("<span>").html( infoFields[field] + ": " + data[field] + "<br>") );
       };
@@ -148,7 +149,7 @@ function mapSelectionDropdown( container ) {
         event.preventDefault();
         var value = $("#addSelectionToMapDropdown option:selected").val()
         for (var i = 0; i < container.contents.length; i++) {
-          if ( request.createMyMapPhoto(value, container.photo_ids()[i]) == false ) { return } ;
+          var myMapPhoto = request.createMyMapPhoto(value, container.photo_ids()[i] );
         };
         container.clear_photos();
       });

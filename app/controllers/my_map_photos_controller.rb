@@ -9,7 +9,7 @@ class MyMapPhotosController < ApplicationController
 
     if @my_map_photo.save
       respond_to do |format|
-        format.json { render nothing: true }
+        format.json { render json: @my_map_photo }
       end
     end
   end
