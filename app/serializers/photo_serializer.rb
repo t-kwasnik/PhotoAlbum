@@ -1,14 +1,9 @@
 class PhotoSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :image, :city, :state, :country, :placename, :related_maps, :location
+  attributes :id, :name, :description, :image, :placename, :related_maps
 
-  def location
-    !object.city.nil? ? city = ( object.city.name + ", " ) : ( city = "" )
-    !object.state.nil? ? state = ( object.state.name + ", " ) : ( state = "" )
-    !object.country.nil? ? country = ( object.country.name ) : ( country = "" )
-
-    location = city + state + country
-    location = location[0.. -3] if location[-2] == ","
-    location = "Unknown" if location.gsub(",","") == ""
-    location
+  def description
+    description = object.description
+    description = " " if object.description.nil?
+    description
   end
 end
