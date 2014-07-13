@@ -33,6 +33,7 @@ li {
   white-space: normal;
 }
 
+
 #selected_photos_container {
   color: white;
   text-align: center;
@@ -148,6 +149,27 @@ li {
   float: left;
 }
 
+#selected_photos_container {
+  text-align: center;
+}
+
+#selected_photos_container > dl {
+  margin: 1em 0 1em 0 ;
+  padding: .75em;
+  height: 40pt;
+}
+
+
+#selected_photos_container > dl > dt {
+  color: white;
+}
+
+#selected_photos_container > dl > dd > a {
+  color: white;
+  height: 24pt;
+}
+
+
 .Selection_div.all {
   height: 100%;
 }
@@ -156,6 +178,28 @@ li {
   max-height: 25%;
 }
 
+.Selection_div > span {
+  float: left;
+  width: 100%;
+  text-align: left;
+}
+
+.Selection_div > h1 {
+  font-size: 16pt;
+  color: black;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.Selection_div > h1 > div {
+  display: inline;
+}
+
+.Selection_div > span > h2 {
+  font-size: 12pt;
+  display: inline-block;
+  margin: 0 .5em;
+}
 
 .photo_collection > ul {
   overflow-x: auto;

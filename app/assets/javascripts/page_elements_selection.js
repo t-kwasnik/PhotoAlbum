@@ -1,5 +1,5 @@
 function populateSelectionWindow( container ) {
-  container.header.append( selectionViewToggle() );
+  container.header =  selectionViewToggle() ;
   container.startListeners = selectionListeners;
   setSelectionWindowDetail( container );
   container.update();
@@ -10,11 +10,15 @@ function selectionListeners(){
   container = this
   $("#SelectionAllButton").click(function(event) {
     event.preventDefault();
+    $( "#selected_photos_container dd" ).removeClass("active");
+    $("#SelectionAllButton").parent().addClass("active");
     setSelectionWindowAll(container);
   });
 
   $("#SelectionSingleButton").click(function(event) {
     event.preventDefault();
+    $( "#selected_photos_container dd" ).removeClass("active");
+    $("#SelectionSingleButton").parent().addClass("active");
     setSelectionWindowDetail(container);
   });
 
@@ -22,16 +26,14 @@ function selectionListeners(){
 }
 
 function selectionViewToggle() {
-  output = $("<div></div>")
+  output = $("<dl class=\"sub-nav\"><dt>Selection: <dt></dl>")
 
-  $("<a>")
-    .attr({"id":"SelectionAllButton", "href":"#", "class":"button tiny"})
-    .html("All")
+  $("<dd></dd>")
+    .html("<a id =\"SelectionAllButton\" href=\"#\">All</a>")
     .appendTo( output )
 
-  $("<a>")
-    .attr({"id":"SelectionSingleButton", "href":"#", "class":"button tiny"})
-    .html("Detail")
+  $("<dd class=\"active\"></dd>")
+    .html("<a id =\"SelectionSingleButton\" href=\"#\">Detail</a>")
     .appendTo( output );
 
   return output
@@ -66,17 +68,19 @@ function selectionWindowDetailFormat() {
   var container = this
   var infoDiv = $( "<div>" )
   var infoList = $( "<ul>" )
-  var infoFields = { "description" : "Description", "placename" : "Place", "location" : "Location" }
+  var infoFields = { "description" : "Description", "placename" : "Location" }
   if ( this.contents.length != 0 ) {
     for (var i = 0; i < this.contents.length; i++) {
       var base = $("<div>").addClass( this.name + "_div");
       data = request.getPhoto(this.contents[i].photo_id)
-      base.append( $("<span>").html( ( i + 1 )  + " of " + this.contents.length ) );
+      base.append( $("<p>").html( ( i + 1 )  + " of " + this.contents.length ) );
       base.append( $("<h1>").html( data.name ) );
+
       base.append( $("<img>").attr("src", data.image.image.med.url ) );
+      base.append( $("<br>") );
 
       for (var field in infoFields) {
-        base.append( $("<span>").html( infoFields[field] + ": " + data[field] + "<br>") );
+        base.append( $("<span>").html( "<h2>" + infoFields[field] + ":</h2> " + data[field] + "<br>") );
       };
 
       related_maps = []
@@ -84,7 +88,8 @@ function selectionWindowDetailFormat() {
         related_maps.push( data.related_maps[ii].name )
       };
 
-      base.append( $("<span>").html( "In Maps: " + related_maps.join(", ") + "<br>") );
+      base.append( $("<span>").html( "<h2>In Maps:</h2> " + related_maps.join(", ") + "<br>") );
+      base.append( $("<span> </span>") );
 
       if ( i == this.active_content ) {
         result = $( $("<li>").append(base) ).addClass("focusSelectionWindow")

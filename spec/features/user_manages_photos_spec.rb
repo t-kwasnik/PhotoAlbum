@@ -59,8 +59,6 @@ so I can manage them
         expect( page ).to have_content "Description"
         expect( page ).to have_content photo.placename
         expect( page ).to have_content photo.description
-        expect( page ).to have_content "#{photo.city.name}, #{photo.state.name}, #{photo.country.name}"
-
 
         expect( all(".Selection_div").count ).to eq(1)
 
