@@ -1,11 +1,16 @@
 class PhotoSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :image, :placename, :related_maps, :people, :activities, :tags
+  attributes :id, :name, :description, :image, :original_date, :placename, :related_maps, :people, :activities, :tags
 
   def description
     description = object.description
     description = " " if object.description.nil?
     description
   end
+
+  def original_date
+    object.original_date.strftime('%B %e, %Y at %l:%M %p')
+  end
+
 
   def people
     people = Category.where(name: "people")

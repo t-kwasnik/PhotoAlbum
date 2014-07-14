@@ -68,7 +68,7 @@ function selectionWindowDetailFormat() {
   var container = this
   var infoDiv = $( "<div>" )
   var infoList = $( "<ul>" )
-  var infoFields = { "description" : "Description", "placename" : "Location", "people" : "People", "activities" : "Activities", "tags" : "Tags" }
+  var infoFields = { "description" : "Description", "original_date" : "Date",  "placename" : "Location", "people" : "People", "activities" : "Activities", "tags" : "Tags" }
   if ( this.contents.length != 0 ) {
     for (var i = 0; i < this.contents.length; i++) {
       var base = $("<div>").addClass( this.name + "_div");
