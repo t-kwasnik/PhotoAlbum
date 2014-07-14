@@ -1,5 +1,5 @@
 class PhotoSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :image, :original_date, :placename, :related_maps, :people, :activities, :tags
+  attributes :id, :name, :description, :image, :placename, :original_date, :related_maps, :people, :activities, :tags
 
   def description
     description = object.description
