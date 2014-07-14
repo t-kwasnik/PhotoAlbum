@@ -20,10 +20,10 @@ function loadPhotosView() {
   var selectedPhotoCollection = new Container("#selected_photos_container", "Selection");
 
   photosView.containers = {
-      "map" : mappedPhotoCollection,
-      "unmap" : unmappedPhotoCollection,
-      "select" : populateSelectionWindow( selectedPhotoCollection )
-    }
+    "map" : mappedPhotoCollection,
+    "unmap" : unmappedPhotoCollection,
+    "select" : populateSelectionWindow( selectedPhotoCollection )
+  }
 
   // specify initial features to map
   var data = request.getPhotos();
