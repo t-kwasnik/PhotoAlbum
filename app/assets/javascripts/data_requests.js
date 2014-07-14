@@ -55,6 +55,22 @@ request = {
         });
     return data;
   },
+  "updatePhoto" : function( id, inputData ) {
+    var recievedData = "";
+    $.ajax({
+          url: '/photos/' + id ,  //Server script to process data
+          type: 'PUT',
+          data: inputData,
+          dataType: "json",
+          async: false,
+          //Options to tell jQuery not to process data or worry about content-type.
+          cache: false,
+          success: function( data ) {
+            recievedData = data
+            }
+        });
+    return recievedData;
+  },
   "createMyMapPhoto" : function(map_id, photo_id) {
     var data = false;
     $.ajax({

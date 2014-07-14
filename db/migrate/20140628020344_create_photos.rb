@@ -6,7 +6,7 @@ class CreatePhotos < ActiveRecord::Migration
       t.integer :user_id, null: false
       t.boolean :is_public, default: false
       t.string :name
-      t.text :description
+      t.text :description, default: "none"
       t.text :placename
       t.integer :city_id
       t.integer :state_id

@@ -17,6 +17,16 @@ class PhotosController < ApplicationController
     respond_with @photo
   end
 
+  def update
+    @photo = Photo.find( params[:id] )
+    @photo.update_attributes( photo_params )
+    if @photo.save
+      respond_to do |format|
+        format.json { render json: @photo }
+      end
+    end
+  end
+
   def create
     @photo = Photo.from_file( photo_params[:image] )
     @photo.user = current_user
@@ -34,7 +44,7 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.required(:photo).permit( :image )
+    params.required(:photo).permit( :image, :name, :description, :placename )
   end
 
   def default_serializer_options

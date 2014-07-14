@@ -71,15 +71,15 @@ ActiveRecord::Schema.define(version: 20140712223525) do
   create_table "photos", force: true do |t|
     t.spatial  "geom",          limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
     t.float    "direction"
-    t.integer  "user_id",                                                                                              null: false
+    t.integer  "user_id",                                                                                               null: false
     t.boolean  "is_public",                                                                            default: false
     t.string   "name"
-    t.text     "description"
+    t.text     "description",                                                                          default: "none"
     t.text     "placename"
     t.integer  "city_id"
     t.integer  "state_id"
     t.integer  "country_id"
-    t.string   "image",                                                                                                null: false
+    t.string   "image",                                                                                                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.time     "original_date"

@@ -170,35 +170,34 @@ li {
 }
 
 
-.Selection_div.all {
-  height: 100%;
-}
-
 .Selection_div > img {
   max-height: 25%;
 }
 
-.Selection_div > span {
-  float: left;
-  width: 100%;
+
+.Selection_div > div {
+  display: block;
   text-align: left;
+  width: 100%;
 }
 
-.Selection_div > h1 {
-  font-size: 16pt;
+
+.Selection_div > div > span {
+  margin: 0 .25em;
   color: black;
-  font-weight: bold;
-  display: inline-block;
 }
 
-.Selection_div > h1 > div {
-  display: inline;
+.Selection_div > div > span.photo_detail {
+  font-size: 10pt;
+  color: white;
 }
 
-.Selection_div > span > h2 {
+.Selection_div > div > span.photo_detail_title {
   font-size: 12pt;
-  display: inline-block;
-  margin: 0 .5em;
+}
+
+.Selection_div > div > span > input {
+  color: black;
 }
 
 .photo_collection > ul {
