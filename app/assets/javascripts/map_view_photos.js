@@ -41,6 +41,8 @@ function loadPhotosView() {
   //load map
   photosView.startUp();
 
+  $("#selected_photos_container").draggable({ containment: $("body") })
+
   $( "#showUnplaced" ).click(function() {
     unplaced = MapToolWindow( "unplaced", photosView.name )
   });

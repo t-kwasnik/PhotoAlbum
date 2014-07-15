@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   end
 
   resources :photos, only: [:index, :show, :create, :update]
+  resources :photo_tags, only: [:create, :destroy]
+  resources :tags, only: [:create]
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

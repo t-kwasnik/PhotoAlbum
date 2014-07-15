@@ -1,5 +1,5 @@
 class PhotoSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :image, :placename, :original_date, :related_maps, :people, :activities, :tags
+  attributes :id, :name, :description, :image, :placename, :original_date, :related_maps, :people_tags, :activities_tags, :other_tags
 
   def description
     description = object.description
@@ -7,31 +7,20 @@ class PhotoSerializer < ActiveModel::Serializer
     description
   end
 
+  def people_tags
+    object.all_tags[:people]
+  end
+
+  def activities_tags
+    object.all_tags[:activities]
+  end
+
+  def other_tags
+    object.all_tags[:other]
+  end
+
   def original_date
     object.original_date.strftime('%B %e, %Y at %l:%M %p')
   end
-
-
-  def people
-    people = Category.where(name: "people")
-    tags = object.tags.where(category: people)
-    output = tags.map { |tag| tag.name }
-    output.join ", "
-  end
-
-  def activities
-    activities = Category.where(name: "activities")
-    tags = object.tags.where(category: activities)
-    output = tags.map { |tag| tag.name }
-    output.join ", "
-  end
-
-  def tags
-    other = Category.where(name: "other")
-    tags = object.tags.where(category: other)
-    output = tags.map { |tag| tag.name }
-    output.join ", "
-  end
-
 
 end

@@ -18,7 +18,7 @@
  */
 
 input {
-  color: white;
+  color: black;
 }
 
 ul {
@@ -33,19 +33,9 @@ li {
   white-space: normal;
 }
 
-
-#selected_photos_container {
-  color: white;
-  text-align: center;
-  min-height: 28%;
-  max-height: 50%;
-  background-color: gray;
+label {
+  color: orange;
 }
-
-#selected_photos_container > h1 {
-  font-size: 14pt;
-}
-
 
 .side_bar{
   color: black;
@@ -55,6 +45,11 @@ li {
   float: right;
   z-index: 2;
   padding: 1em;
+}
+
+#my_maps_container {
+  width: 20%;
+  display: inline-block;
 }
 
 #my_c_map_content_container {
@@ -89,7 +84,7 @@ li {
   float: left;
   margin: 0px;
   padding: 0px;
-  width: 75%;
+  width: 100%;
   height: 100%;
   position: absolute;
   z-index: 0;
@@ -124,7 +119,6 @@ li {
 
 .photo_bar {
   width: 100%;
-  max-width: 100%;
   background-color: rgba(255,255,255,.7);
   border-radius: 3px;
   z-index: 2;
@@ -135,89 +129,28 @@ li {
 }
 
 .photo_collection {
-  min-width: 25%;
-  max-width: 48%;
+  min-width: 35%;
+  max-width: 35%;
   margin: .75%;
   background-color: rgba(255,255,255,.7);
-  min-width: none;
-  height: 100%;
   display: inline-block;
-  white-space:nowrap;
-}
-.photo_collection > form {
-  display: inline-block;
-  float: left;
 }
 
-#selected_photos_container {
-  text-align: center;
-}
-
-#selected_photos_container > dl {
-  margin: 1em 0 1em 0 ;
-  padding: .75em;
-  height: 40pt;
-}
-
-
-#selected_photos_container > dl > dt {
-  color: white;
-}
-
-#selected_photos_container > dl > dd > a {
-  color: white;
-  height: 24pt;
-}
-
-
-.Selection_div > img {
-  max-height: 25%;
-}
-
-
-.Selection_div > div {
-  display: block;
-  text-align: left;
-  width: 100%;
-}
-
-
-.Selection_div > div > span {
-  margin: 0 .25em;
-  color: black;
-}
-
-.Selection_div > div > span.photo_detail {
-  font-size: 10pt;
-  color: white;
-}
-
-.Selection_div > div > span.photo_detail_title {
-  font-size: 12pt;
-}
-
-.Selection_div > div > span > input {
-  color: black;
-}
-
-.photo_collection > ul {
+.photoList {
+  white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
 }
-.photo_collection > ul > li {
+
+.photoList > li {
   display: inline-block;
 }
 
-
-.collection_photo {
-  max-height: 100px;
-  padding: 1em .5em 0 .5em;
+.photoList > li > img {
+  height: 100px;
+  margin: .5em;
 }
 
-
-.collection_photo_active {
-  max-height: 15%;
-}
 
 .map_tool {
   position: relative;

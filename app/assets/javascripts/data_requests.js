@@ -55,6 +55,64 @@ request = {
         });
     return data;
   },
+    "createPhotoTag" : function( tagData ) {
+    var tag = "";
+    $.ajax({
+            url: '/photo_tags',  //Server script to process data
+            type: 'POST',
+            data: tagData,
+            async: false,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            success: function( data ) {
+              tag = data;
+            },
+        });
+    return tag;
+  },
+   "deletePhotoTag" : function( tagID ) {
+    var tag = "";
+    $.ajax({
+            url: '/photo_tags/' + tagID,  //Server script to process data
+            type: 'DELETE',
+            async: false,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            success: function( data ) {
+              tag = data;
+            },
+        });
+    return tag;
+  },
+    "createTag" : function( tagData ) {
+    var tag = "";
+    $.ajax({
+            url: '/tags',  //Server script to process data
+            type: 'POST',
+            data: tagData,
+            async: false,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            success: function( data ) {
+              tag = data;
+            },
+        });
+    return tag;
+  },
+  "deleteTag" : function( tagID ) {
+    var tag = "";
+    $.ajax({
+            url: '/tags/' + tagID,  //Server script to process data
+            type: 'DELETE',
+            async: false,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            success: function( data ) {
+              tag = data;
+            },
+        });
+    return tag;
+  },
   "updatePhoto" : function( id, inputData ) {
     var recievedData = "";
     $.ajax({
