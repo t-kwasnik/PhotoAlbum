@@ -22,8 +22,14 @@ default: &default
   pool: 5
 
 development:
-  <<: *default
-  database: photo_album_development
+    adapter: postgis
+    encoding: unicode
+    database: <%= ENV["RDS_DB_NAME"] %>
+    username: <%= ENV["RDS_USERNAME"] %>
+    password: <%= ENV["RDS_PASSWORD"] %>
+    host: <%= ENV["RDS_HOSTNAME"] %>
+    port: <%= ENV["RDS_PORT"] %>
+    pool: 5
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -59,6 +65,7 @@ test:
   <<: *default
   database: photo_album_test
 
+
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -79,7 +86,11 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: photo_album_production
-  username: photo_album
-  password: <%= ENV['PHOTO_ALBUM_DATABASE_PASSWORD'] %>
+  adapter: postgis
+  encoding: unicode
+  database: <%= ENV["RDS_DB_NAME"] %>
+  username: <%= ENV["RDS_USERNAME"] %>
+  password: <%= ENV["RDS_PASSWORD"] %>
+  host: <%= ENV["RDS_HOSTNAME"] %>
+  port: <%= ENV["RDS_PORT"] %>
+  pool: 5
