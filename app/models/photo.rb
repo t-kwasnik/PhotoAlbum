@@ -1,6 +1,9 @@
 include ApplicationHelper
 
 class Photo < ActiveRecord::Base
+
+  before_save :populate_description
+
   belongs_to :user
   has_many :photo_tags
   has_many :tags, through: :photo_tags
@@ -22,6 +25,11 @@ class Photo < ActiveRecord::Base
   attr_reader :related_maps, :type, :geometry, :properties, :geojson, :all_tags
   attr_accessor :set_placename
 
+  def populate_description
+    if self.description.empty?
+      self.description = "none"
+    end
+  end
 
   def related_maps
     @my_maps = self.my_maps.map { |obj| { name: obj["name"], id: obj["id"] } }  if self.my_maps
@@ -30,11 +38,11 @@ class Photo < ActiveRecord::Base
   def all_tags
     output = { people: [], activities: [], other: [] }
 
-    all_tags = self.tags
-    all_tags.each do |tag|
-      output[:people] <<  { name: tag["name"], id: tag["id"] } if tag.category.name == "people"
-      output[:activities] <<  { name: tag["name"], id: tag["id"] } if tag.category.name == "activities"
-      output[:other] <<  { name: tag["name"], id: tag["id"] } if tag.category.name == "other"
+    all_photo_tags = self.photo_tags
+    all_photo_tags.each do |photo_tag|
+      output[:people] <<  { name: photo_tag.tag.name, id: photo_tag["id"] } if photo_tag.tag.category.name == "people"
+      output[:activities] <<  { name: photo_tag.tag.name, id: photo_tag["id"] } if photo_tag.tag.category.name == "activities"
+      output[:other] <<  { name: photo_tag.tag.name, id: photo_tag["id"] } if photo_tag.tag.category.name == "other"
     end
     output
   end

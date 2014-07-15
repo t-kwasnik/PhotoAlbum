@@ -6,7 +6,6 @@ class TagsController < ApplicationController
     category = Category.where( name: tag_params["category"] ).first
     tag = Tag.new( name: tag_params["name"], category: category  )
     if tag.save
-      PhotoTag.create( tag: tag, photo_id: params[:photo_id] )
       respond_to do |format|
         format.json { render json: tag }
       end

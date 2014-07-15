@@ -2,32 +2,36 @@
   <div class='map_tool photo_bar disable_map'>
     <div id='mapped_photos_container' class='photo_collection disable_map'></div>
     <div id='unmapped_photos_container' class='photo_collection disable_map'></div>
-    <div id='unmapped_photos_container' class='photo_collection disable_map'></div>
-  </div>
 
-  <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
-</div>
-
-<div class="side_bar">
-  <div id="selected_photos_container" ></div>
-
-  <div id="my_maps_container">
+ <div id="my_maps_container">
     <ul>
       <li>
         <%= simple_form_for @new_my_map do |f| %>
-        <%= f.input :name, type: :string, label: "Name" %>
-        <%= f.button :submit, 'Create new map', class:  "button tiny" %>
+        <%= f.input :name, type: :string, label: "Create New Map" %>
+
         <% end %>
       </li>
       <% @my_maps.each do |map| %>
         <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
       <% end %>
-    </ul>
-    <form id="UploadNewPhotos" action="<%= photos_path %>" method="POST">
+
+    <li><form id="UploadNewPhotos" action="<%= photos_path %>" method="POST">
       <input type="file" id="photosToMap" name="photos[]" multiple/>
       <a href="#" id="MapNewPhotos" class="button tiny">Map them!</a>
-    </form>
+    </form></li>
+    </ul>
   </div>
+
+
+  </div>
+
+  <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
+
+
+<div class="side_bar">
+  <div id="selected_photos_container" class="disable_map"></div>
+</div>
+
 </div>
 
 <%= javascript_tag do %>

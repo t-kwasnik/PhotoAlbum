@@ -30,7 +30,7 @@ function Container(base_element_tag, header) {
       return array
   };
   this.defaultFormat = function (){
-    html = $( "<ul>" );
+    html = $( "<ul>" ).addClass(this.name + " photoList");
     for (var i = 0; i < this.contents.length; i++) {
       $( $( "<li>" ).append( this.contents[i].html() ) ).appendTo(html);
     };

@@ -10,7 +10,7 @@ class MyMapsController < ApplicationController
   end
 
   def show
-    @my_map = MyMap.find(params[:id])
+    @my_map = MyMap.find( params[:id] )
     @my_map_photos = @my_map.my_map_photos
 
     public_map = @my_map["is_public"]
@@ -25,12 +25,13 @@ class MyMapsController < ApplicationController
 
   def create
     new_my_map = MyMap.new(my_map_params)
-    new_my_map.user_id = current_user[:id]
+    new_my_map.user = current_user
+
     if new_my_map.save
       redirect_to my_map_path(new_my_map)
     else
       flash[:notice] = "Failed to create map - name can't be blank"
-      redirect_to photos_path
+      render nothing: true
     end
   end
 

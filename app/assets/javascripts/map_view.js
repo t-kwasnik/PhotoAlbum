@@ -11,15 +11,6 @@ function MapWindow( mapCanvas ) {
     this.startListeners();
   }
 
-  this.resetMarkerColors = function(){
-    for (var i = 0; i < geoJSON.features.length; i++) {
-      geoJSON.features[i].properties['marker-color'] = geoJSON.features[i].properties['old-color'] ||
-      geoJSON.features[i].properties['marker-color'];
-    };
-    markers.setGeoJSON(geoJSON);
-    $("#mapped_photos_container img").removeClass("collection_photo_active");
-  };
-
   this.disableMap = function() {
     this.mapCanvas.dragging.disable();
     this.mapCanvas.touchZoom.disable();
