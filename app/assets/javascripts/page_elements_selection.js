@@ -91,40 +91,60 @@ function selectionWindowDetailFormat() {
   var container = this
   var infoDiv = $( "<div>" )
   var infoList = $( "<ul>" )
-  var infoFields = { "description" : "Description",  "placename" : "Location", "people" : "People", "activities" : "Activities", "tags" : "Tags" }
+  var textFields = { "description" : "Description",  "placename" : "Location" }
+  var tagFields = { "people_tags" : "People", "activities_tags" : "Activities", "other_tags" : "Tags", "related_maps" : "In Maps"  }
 
   if ( this.contents.length != 0 ) {
     for (var i = 0; i < this.contents.length; i++) {
       var base = $("<div>").addClass( this.name + "_div");
-      data = request.getPhoto( this.contents[i].photo_id )
+      var photo_id = this.contents[i].photo_id
+      data = request.getPhoto( photo_id )
       base.append( $("<p>").html( ( i + 1 )  + " of " + this.contents.length ) );
       base.append( $("<div>").append(
         $("<span>")
           .addClass( "photo_detail" )
           .html( data.name)
-          .attr("id", "name_" + this.contents[i].photo_id )
+          .attr("id", "name_" + photo_id )
           .bind('dblclick', switchToInput )
       ));
 
       base.append( $("<img>").attr("src", data.image.image.med.url ) );
 
-      for (var field in infoFields) {
+      for (var field in textFields) {
         base.append( $("<div>")
-          .html( "<span class=\"photo_detail_title\">" + infoFields[field] + ":</span>")
+          .html( "<span class=\"photo_detail_title\">" + textFields[field] + ":</span>")
           .append(
             $( "<span>" )
               .addClass( "photo_detail" )
               .html( data[field] )
               .bind('dblclick', switchToInput )
-              .attr("id", field + "_" + this.contents[i].photo_id ) ));
+              .attr("id", field + "_" + photo_id ) ));
       };
 
-      related_maps = []
-      for (var ii = 0; ii < data.related_maps.length; ii++) {
-        related_maps.push( data.related_maps[ii].name )
-      };
+      for (var tagField in tagFields) {
+        var tagBase = $("<div>").html( "<span class=\"photo_detail_title\">" + tagFields[tagField] + ":</span>")
 
-      base.append( $("<div>").html( "<span class=\"photo_detail_title\">In Maps:</span><span class=\"photo_detail\"> " + related_maps.join(", ") + "</span>") );
+        tagBase.append( $("<div>")
+          .html( "Click to Add" )
+          .attr("id", tagField + "_" + photo_id)
+          .dblclick( function( event ) {
+            var elemID = $(event.target).attr("id").split("_")
+            var photoID = elemID[2]
+            var categoryName = elemID[0]
+            $(event.target).html(
+              $("<input>").focusout( function( event ){
+                createdTag = request.createTag( photoID, { tag: { name: $(event.target).val() , category: categoryName  }} )
+                $(event.target).parent().parent().append( $("<div>").html( createdTag.name ) );
+                $(event.target).parent().html( "Click to Add" )
+              }))
+          }));
+
+        for (var ii = 0; ii < data[tagField].length; ii++) {
+          tagBase.append( $("<div>").html( data[tagField][ii].name ) )
+        }
+
+        base.append( tagBase )
+      }
 
       if ( i == this.active_content ) {
         result = $( $("<li>").append(base) ).addClass("focusSelectionWindow")

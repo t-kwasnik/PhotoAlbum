@@ -55,6 +55,21 @@ request = {
         });
     return data;
   },
+    "createTag" : function( photo_id, tagData ) {
+    var tag = "";
+    $.ajax({
+            url: '/photos/' + photo_id + "/tags",  //Server script to process data
+            type: 'POST',
+            data: tagData,
+            async: false,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            success: function( data ) {
+              tag = data;
+            },
+        });
+    return tag;
+  },
   "updatePhoto" : function( id, inputData ) {
     var recievedData = "";
     $.ajax({

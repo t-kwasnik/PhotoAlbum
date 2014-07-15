@@ -14,7 +14,9 @@ class PhotosController < ApplicationController
 
   def show
     @photo = Photo.find( params[:id] )
-    respond_with @photo
+    respond_to do |format|
+      format.json { render json: @photo }
+    end
   end
 
   def update

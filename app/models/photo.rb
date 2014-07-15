@@ -19,12 +19,28 @@ class Photo < ActiveRecord::Base
 
   self.rgeo_factory_generator = RGeo::Geos.factory_generator
 
-  attr_reader :related_maps, :type, :geometry, :properties, :geojson
+  attr_reader :related_maps, :type, :geometry, :properties, :geojson, :all_tags
   attr_accessor :set_placename
 
 
   def related_maps
     @my_maps = self.my_maps.map { |obj| { name: obj["name"], id: obj["id"] } }  if self.my_maps
+  end
+
+  def all_tags
+    output = { people: [], activities: [], other: [] }
+
+    all_tags = self.tags
+    all_tags.each do |tag|
+      output[:people] <<  { name: tag["name"], id: tag["id"] } if tag.category.name == "people"
+      output[:activities] <<  { name: tag["name"], id: tag["id"] } if tag.category.name == "activities"
+      output[:other] <<  { name: tag["name"], id: tag["id"] } if tag.category.name == "other"
+    end
+    output
+  end
+
+  def activities
+    @my_maps = self.tags.map { |obj| { name: obj["name"], id: obj["id"] } }  if self.my_maps
   end
 
   def properties
@@ -84,7 +100,6 @@ class Photo < ActiveRecord::Base
             end
           end
         end
-        binding.pry
         photo.set_placename
       end
     end
