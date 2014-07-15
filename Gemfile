@@ -16,7 +16,6 @@ gem 'mini_magick'
 gem 'fog'
 gem 'simple_form'
 gem 'exifr'
-gem 'selenium-webdriver'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
