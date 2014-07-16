@@ -1,32 +1,45 @@
+
+
 <div id = "photos_map" class = "enable_map">
-  <div class='map_tool photo_bar disable_map'>
-    <div id='mapped_photos_container' class='photo_collection disable_map'></div>
-    <div id='unmapped_photos_container' class='photo_collection disable_map'></div>
+<% if flash.any? %>
+  <div class="alert alert-success" role="alert">
+    <a href="#" class="alert-link"><%= flash[:notice] %></a>
+  </div>
+<% end %>
 
- <div id="my_maps_container">
+<div id="photoBar" class='map_tool photo_bar disable_map'>
+  <div id="photoBarTabs">
     <ul>
-      <li>
-        <%= simple_form_for @new_my_map do |f| %>
-        <%= f.input :name, type: :string, label: "Create New Map" %>
-
-        <% end %>
+      <li class="active photoBarTab"><div id="photoLibraryTab">
+        <div id='mapped_photos_container' class='photo_collection disable_map panel panel-default'>
+        </div>
+        <div id='unmapped_photos_container' class='photo_collection disable_map panel panel-default'></div>
       </li>
-      <% @my_maps.each do |map| %>
-        <li><div id="my_map_div"><%= link_to map.name, my_map_path(map.id) %></div></li>
-      <% end %>
 
-    <li><form id="UploadNewPhotos" action="<%= photos_path %>" method="POST">
-      <input type="file" id="photosToMap" name="photos[]" multiple/>
-      <a href="#" id="MapNewPhotos" class="button tiny">Map them!</a>
-    </form></li>
+      <li class="photoBarTab" style="display: none;"><div id="mapLibraryTab">
+        <ul id="my_maps_container">
+          <li><div id="createNewMap" class="myMapBox" style="background:gray;">Create New</div></li>
+        </ul>
+      </div></li>
+
+      <li class="photoBarTab" style="display: none;"><div id="mapToolsTab">
+        <ul>
+          <li><form id="UploadNewPhotos" action="<%= photos_path %>" method="POST">
+            <input type="file" id="photosToMap" name="photos[]" multiple/>
+            <a href="#" id="MapNewPhotos" class="button tiny">Map them!</a>
+          </form></li>
+        </ul>
+      </div></li>
     </ul>
   </div>
-
-
+  <div id="tabs">
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a class="photoLibraryTab" href ="#" >Photo Library</a></li>
+        <li ><a class="mapLibraryTab" href ="#" >Maps Library</a></li>
+        <li ><a class="mapToolsTab" href ="#" >Map Tools</a></li>
+      </ul>
   </div>
-
-  <div class="map_tool" id="showUnplaced" class="ui-widget-content"> See Unplaced Photos </div>
-
+</div>
 
 <div class="side_bar">
   <div id="selected_photos_container" class="disable_map"></div>

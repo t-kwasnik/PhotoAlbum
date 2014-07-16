@@ -10,42 +10,51 @@ function parseNewPhoto( mapWindow, geoJSON ) {
   };
 
 function loadPhotosView() {
-
   // create window to hold contents
+
   var photosView = new MapWindow('photos_map');
 
   // build empty containers for mapped, unmapped and selected
-  var mappedPhotoCollection = new Container("#mapped_photos_container", "Mapped");
-  var unmappedPhotoCollection = new Container("#unmapped_photos_container", "Unmapped");
-  var selectedPhotoCollection = new Container("#selected_photos_container", "Selection");
+
+  var mappedPhotoCollection = new Panel("#mapped_photos_container", "Mapped");
+  var unmappedPhotoCollection = new Panel("#unmapped_photos_container", "Unmapped");
+  var selectedPhotoCollection = new Panel("#selected_photos_container", "Selection");
 
   photosView.containers = {
     "map" : mappedPhotoCollection,
     "unmap" : unmappedPhotoCollection,
     "select" : populateSelectionWindow( selectedPhotoCollection )
   }
-
   // specify initial features to map
-  var data = request.getPhotos();
+  var photos = request.getPhotos();
 
+  //build markers
   markers = new MapLayer
   photosView.layers["markers"] = markers
 
-  for(var i = 0; i < data.length; i++ ) {
-    parseNewPhoto( photosView, data[i] )
+  for(var i = 0; i < photos.length; i++ ) {
+    parseNewPhoto( photosView, photos[i] )
   }
 
+  //load user maps
+  var my_maps = request.getMyMaps()
+
+  var mapBoxes = new MapBoxGroup("#my_maps_container")
+
+  for(var i=0; i < my_maps.length; i++){
+    var map = new MapBox( my_maps[i] );
+    mapBoxes.contents.push(map)
+  };
+  mapBoxes.update()
   photosView.layers.markers.layer.addTo( photosView.mapCanvas )
   if ( markers.geoJSON.features.length > 0 ) { photosView.mapCanvas.fitBounds( photosView.layers.markers.layer.getBounds() ) };
 
-  //load map
+  //load page
   photosView.startUp();
 
-  $("#selected_photos_container").draggable({ containment: $("body") })
+  //load custom page listeners
 
-  $( "#showUnplaced" ).click(function() {
-    unplaced = MapToolWindow( "unplaced", photosView.name )
-  });
+  $("#selected_photos_container").draggable({ containment: $("body") })
 
   photosView.layers.markers.layer.on('click', function(e) {
     prop = e.layer.feature.properties
@@ -62,7 +71,41 @@ function loadPhotosView() {
     };
   });
 
-  $( "#MapNewPhotos" ).click( function(event) {
+  $("#createNewMap").click( function( event ) {
+    $( event.target ).html( $( "<input>" )
+        .keypress( function ( event ) {
+          var value = $( event.target ).val()
+          if ( event.keyCode == 13 ) {
+            if ( value != "" ) {
+              var new_map = ""
+              var target = $( event.target )
+              new_map = request.createMyMap( {"my_map": { "name": target.val()}} )
+              $("#my_maps_container").append( $("<li>").append(
+                $("<a>").attr("href", "my_maps/" + new_map.id ).html(
+                  $("<div>").addClass("myMapBox").html( new_map.name )
+                )
+              ))
+            target.parent().html("Create New");
+            }
+          }
+        }
+      )
+      .focusout( function ( event ) {
+        $( event.target ).parent().html("Create New");
+      } ))
+      $( event.target ).children().first().focus()
+    })
+
+  $( "#tabs ul li" ).click(function( event ) {
+    event.preventDefault();
+    tab = $(event.target).attr("class")
+    $( "#tabs ul li.active" ).removeClass("active");
+    $( "#photoBarTabs ul li.active" ).removeClass("activeTab").hide();
+    $( event.target ).parent().addClass("active");
+    $( "#" + tab ).parent().addClass("active").show();
+  })
+
+  $("#MapNewPhotos" ).click( function(event) {
       event.preventDefault();
       var files = document.getElementById('photosToMap').files;
       var formData = new FormData();

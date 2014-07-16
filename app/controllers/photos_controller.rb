@@ -5,10 +5,7 @@ class PhotosController < ApplicationController
   before_filter :authenticate
 
   def index
-    @my_maps = MyMap.where( user_id: current_user )
-    @new_my_map = MyMap.new
     @photos = Photo.where( user_id: current_user )
-
     respond_with @photos, each_serializer: GeojsonSerializer
   end
 

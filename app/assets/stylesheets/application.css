@@ -11,7 +11,7 @@
  * file per style scope.
  *
  *= require mapbox
- *= require foundation_and_overrides
+ *= require bootstrap
  *= require_tree .
  *= require_self
 
@@ -19,10 +19,19 @@
 
 input {
   color: black;
+  background: none;
+  border:none;
+}
+
+input:active {
+  color: black;
+  background: none;
+  border:none;
 }
 
 ul {
-  margin: 1em;
+  margin: .5em;
+  padding: 0;
   list-style-type:none;
   z-index: 2;
 }
@@ -37,6 +46,22 @@ label {
   color: orange;
 }
 
+.navbar {
+  margin: 0;
+  position: relative;
+  z-index: 100;
+}
+
+.alert {
+  margin: 0;
+}
+
+.leaflet-container h3 {
+  padding: .25em;
+  margin: 0;
+  line-height: 0;
+}
+
 .side_bar{
   color: black;
   width: 24%;
@@ -47,9 +72,102 @@ label {
   padding: 1em;
 }
 
-#my_maps_container {
-  width: 20%;
+#tabs {
+  float: left;
+  width: 15%;
   display: inline-block;
+  background: rgba(255,255,255,.7);
+  border-radius: 10px;
+  padding: .5em;
+  margin: .5em;
+}
+
+#photoBarTabs {
+  width: 80%;
+  display: inline-block;
+}
+
+.photoBarTab > div >  ul {
+  text-align: left;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.photoBarTab > div > ul > li {
+  display: inline-block;
+}
+
+.myMapBox {
+  color: black;
+  font-size: 18pt;
+  text-shadow: 1px 1px 1px rgb(255,255,255);
+  font-family: 'Oswald', sans-serif, bold;
+  text-align: center;
+  display: inline-block;
+  border-radius: 10px;
+  height: 150px;
+  width: 150px;
+  margin: .5em;
+  background: gray;
+  background-size:cover;
+  padding: .5em;
+  border: 2px solid black;
+
+}
+
+#createNewMap {
+  color: white;
+  text-shadow: 1px 1px 1px rgb(0,0,0);
+  border: 2px dashed black;
+}
+
+.photo_bar {
+  width: 100%;
+  background-color: rgba(220,220,220,.7);
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.photo_bar:hover {
+  background-color: rgba(220,220,220,.8);
+}
+
+.photo_collection {
+  max-width: 48%;
+  margin: .75%;
+  background-color: rgba(255,255,255,.7);
+  display: inline-block;
+  text-align: left;
+}
+
+.photoList {
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.photoList > li {
+  display: inline-block;
+}
+
+.photoList > li > img {
+  height: 100px;
+  margin: .5em;
+}
+
+
+.map_tool {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+}
+
+.selection_window {
+  z-index: 3;
+  width:100px;
+  height:100px;
+  background:red;
 }
 
 #my_c_map_content_container {
@@ -114,53 +232,4 @@ label {
   z-index: 0;
   text-align: left;
   display: inline-block;
-}
-
-
-.photo_bar {
-  width: 100%;
-  background-color: rgba(255,255,255,.7);
-  border-radius: 3px;
-  z-index: 2;
-}
-
-.photo_bar:hover {
-  background-color: rgba(255,255,255,.8);
-}
-
-.photo_collection {
-  min-width: 35%;
-  max-width: 35%;
-  margin: .75%;
-  background-color: rgba(255,255,255,.7);
-  display: inline-block;
-}
-
-.photoList {
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.photoList > li {
-  display: inline-block;
-}
-
-.photoList > li > img {
-  height: 100px;
-  margin: .5em;
-}
-
-
-.map_tool {
-  position: relative;
-  z-index: 2;
-  display: inline-block;
-}
-
-.selection_window {
-  z-index: 3;
-  width:100px;
-  height:100px;
-  background:red;
 }

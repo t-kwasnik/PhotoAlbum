@@ -16,7 +16,7 @@ class MyMapsController < ApplicationController
     public_map = @my_map["is_public"]
 
     if ( current_user ? ( !public_map && ( current_user.id == @my_map["user_id"] ) ) : false ) || public_map
-      respond_with(@my_map)
+      respond_with( @my_map )
     else
       flash[:notice] = "You need to sign in first."
       redirect_to main_index_path
@@ -27,11 +27,11 @@ class MyMapsController < ApplicationController
     new_my_map = MyMap.new(my_map_params)
     new_my_map.user = current_user
 
-    if new_my_map.save
-      redirect_to my_map_path(new_my_map)
-    else
-      flash[:notice] = "Failed to create map - name can't be blank"
-      render nothing: true
+    if !new_my_map.save
+      flash[:alert] = "Failed to create map - name can't be blank"
+    end
+    respond_to do |format|
+      format.json { render json: new_my_map }
     end
   end
 
