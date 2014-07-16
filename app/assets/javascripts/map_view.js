@@ -8,6 +8,9 @@ function MapWindow( mapCanvas ) {
 
   this.startUp = function() {
     new L.Control.Zoom({ position: 'bottomleft' }).addTo( this.mapCanvas ) ;
+    for (var container in this.containers) {
+      this.containers[container].update()
+    }
     this.startListeners();
   }
 

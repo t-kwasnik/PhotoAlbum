@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
 
-    <title><%= content_for?(:title) ? yield(:title) : "foundation-rails" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "HappyMap" %></title>
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application", "vendor/modernizr" %>
@@ -14,38 +15,23 @@
   </head>
 
   <body>
-  <div class = "contain-to-grid">
-  <nav class="top-bar" data-top-bar>
-  <section class="top-bar-section">
+  <nav class="navbar navbar-inverse" role="navigation">
+  <div class="containter">
+       <div class="navbar-header"><a href="/photos" class="navbar-brand" %>HappyMap</a></div>
 
-    <ul class="title-area">
-      <li class="name">
-        <h1 style="color:white;"><%= link_to "HappyMap", photos_path %></h1>
-      </li>
-    </ul>
-
-    <ul class = "right">
-        <div class= class="row">
+    <ul class = "nav navbar-right navbar-nav">
         <% if !current_user %>
           <li><%= link_to "Sign In", new_user_session_path %></li>
           <li><%= link_to "Sign Up", new_user_registration_path %></li>
         <% else %>
-          <li><p id="username"><%= current_user.username %></p></li>
-          <li><%= link_to "Edit Account", edit_user_registration_path %></li>
+          <li><%= link_to current_user.username, edit_user_registration_path %></li>
           <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
         <% end %>
-        <div>
-      </li>
     </ul>
-    </section>
-    </nav>
-    </div>
-    <% if flash.any? %>
-      <p><%= flash[:alert] %></p>
-      <p><%= flash[:notice] %></p>
-    <% end %>
+  </div>
+  </nav>
 
-    <%= yield %>
+  <%= yield %>
   </body>
 </html>
 

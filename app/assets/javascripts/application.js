@@ -9,14 +9,19 @@
 //
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
-//
+
 //= require jquery
 //= require jquery_ujs
 //= require mapbox.js
+//= require bootstrap
 //= require_tree .
-//= require foundation
 
-$(function(){ $(document).foundation(); });
+
+$(document).ready(function(){
+  setTimeout(function(){
+    $(".alert").fadeOut();
+  },2000)
+})
 
 
 

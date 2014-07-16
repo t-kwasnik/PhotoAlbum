@@ -35,6 +35,21 @@ request = {
     })
     return data
   },
+  "createMyMap" : function( mapName ) {
+    var map = "";
+    $.ajax({
+            url: '/my_maps',  //Server script to process data
+            type: 'POST',
+            data: mapName,
+            async: false,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            success: function( data ) {
+              map = data;
+            },
+        });
+    return map;
+  },
   "createPhoto" : function(formData, view, update_container) {
     var data = "";
     $.ajax({

@@ -1,5 +1,10 @@
 <div id='main_map'></div>
 
+<% if flash.any? %>
+  <div class="alert alert-success" role="alert">
+    <a href="#" class="alert-link"><%= flash[:notice] %></a>
+  </div>
+<% end %>
 
 <%= javascript_tag do %>
   $( document ).ready( loadMainView() )

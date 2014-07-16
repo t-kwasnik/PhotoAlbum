@@ -13,11 +13,45 @@ function MapLayer() {
   };
 }
 
-function Container(base_element_tag, header) {
+function MapBox( object ){
+  this.attr = object
+  this.name = this.attr.name;
+  this.background = function() {
+    if ( this.attr.photos.length > 0 ) {
+      return "url(\"" + this.attr.photos[0].image + "\""
+    } else {
+      return "gray"
+    }
+  }
+  this.header = $("<div></div").html( this.name ).addClass("myMapBox");
+  this.html = function(){
+    return $("<li>").append(
+            $("<a>").attr("href", "/my_maps/" + this.attr.id ).html(
+              $("<div id=\"" + this.name + "\"></div")
+                .html( this.name )
+                .addClass( "myMapBox" )
+                .attr("style","background:" + this.background() + ")" ) ) );
+  };
+}
+
+function MapBoxGroup( base_element_tag ){
+  this.base = base_element_tag;
+  this.contents = [];
+  this.update = function() {
+    var update = $( this.base )
+    for(var i = 0; i < this.contents.length; i++ ){
+      update.append( this.contents[i].html() );
+    }
+    //$(this.base).replaceWith( update )
+  };
+}
+
+
+function Panel(base_element_tag, header) {
   this.name = header;
   this.main = this;
   this.base = base_element_tag;
-  this.header = $( "<h1></h1>" ).html( header );
+  this.header = $( "<div class=\"panel-heading\"></div>" ).html( "<h3 class=\"panel-title\">" + header + "</h3>" );
   this.footer = "";
   this.contents = [];
   this.active_content = 0;
@@ -68,6 +102,4 @@ function CollectionPhoto( photo_id, photo_url, header ) {
     return $('<img />').attr({ class: 'collection_photo', 'id': this.header + "_" + this.photo_id, 'src': this.photo_url })
   };
   this.html = this.image;
-
-
 };
