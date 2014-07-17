@@ -23,6 +23,7 @@ input {
   border:none;
 }
 
+
 input:active {
   color: black;
   background: none;
@@ -40,6 +41,7 @@ li {
   list-style: none;
   z-index: 2;
   white-space: normal;
+  margin-bottom: .25em;
 }
 
 label {
@@ -57,6 +59,7 @@ label {
 }
 
 .leaflet-container h3 {
+  font-family: 'Oswald', sans-serif, bold;
   padding: .25em;
   margin: 0;
   line-height: 0;
@@ -94,6 +97,11 @@ label {
   overflow-y: hidden;
 }
 
+
+.input-group {
+  width: 300px;
+}
+
 .photoBarTab > div > ul > li {
   display: inline-block;
 }
@@ -105,12 +113,12 @@ label {
   font-family: 'Oswald', sans-serif, bold;
   text-align: center;
   display: inline-block;
-  border-radius: 10px;
+  border-radius: 3px;
   height: 150px;
   width: 150px;
   margin: .5em;
   background: gray;
-  background-size:cover;
+  background-size:contain;
   padding: .5em;
   border: 2px solid black;
 
@@ -120,6 +128,10 @@ label {
   color: white;
   text-shadow: 1px 1px 1px rgb(0,0,0);
   border: 2px dashed black;
+}
+
+#uploadLandingPad {
+  width:400px;
 }
 
 .photo_bar {

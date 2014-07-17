@@ -24,10 +24,20 @@
 
       <li class="photoBarTab" style="display: none;"><div id="mapToolsTab">
         <ul>
-          <li><form id="UploadNewPhotos" action="<%= photos_path %>" method="POST">
-            <input type="file" id="photosToMap" name="photos[]" multiple/>
-            <a href="#" id="MapNewPhotos" class="button tiny">Map them!</a>
-          </form></li>
+          <li>
+          <div id "uploadPhotos" class='disable_map panel panel-default'>
+            <div class="panel-heading">
+              <h3 class="panel-title"> Upload Files </h3>
+            </div>
+
+            <div class="input-group">
+              <input type="file" id="photosToMap" id="uploadPhotosInput"  name="photos[]" multiple/>
+              <span class="input-group-btn">
+                <button id="MapNewPhotos" class="btn btn-default" type="button">Map!</button>
+              </span>
+            </div>
+          </div>
+         </li>
         </ul>
       </div></li>
     </ul>
