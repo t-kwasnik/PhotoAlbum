@@ -1,68 +1,60 @@
 function populateSelectionWindow( container ) {
   container.header =  selectionViewToggle() ;
   container.startListeners = selectionListeners;
-  setSelectionWindowDetail( container );
+  container.main_body = selectionMainBody ;
   container.update();
   return container;
 }
 
 function selectionListeners(){
   container = this
-  $("#SelectionAllButton").click(function(event) {
-    event.preventDefault();
-    $( "#selected_photos_container dd" ).removeClass("active");
-    $("#SelectionAllButton").parent().addClass("active");
-    setSelectionWindowAll(container);
-  });
-
-  $("#SelectionSingleButton").click(function(event) {
-    event.preventDefault();
-    $( "#selected_photos_container dd" ).removeClass("active");
-    $("#SelectionSingleButton").parent().addClass("active");
-    setSelectionWindowDetail(container);
-  });
-
+  $("#SelectionAllButton").click( switchSelectionView ) ;
+  $("#SelectionSingleButton").click( switchSelectionView );
   return true
 }
 
+function switchSelectionView( event ){
+    event.preventDefault();
+    $( event.target ).parent().parent().children("li.active").removeClass("active");
+    $("#selectionViews li:hidden").show()
+    $("#selectionViews li.active").hide();
+    $("#selectionViews li:visible").addClass("active");
+    $("#selectionViews li:hidden").removeClass("active");
+    $( event.target ).parent().addClass("active");
+  }
+
 function selectionViewToggle() {
-  output = $("<dl class=\"sub-nav\"><dt>Selection: <dt></dl>")
-
-  $("<dd></dd>")
-    .html("<a id =\"SelectionAllButton\" href=\"#\">All</a>")
-    .appendTo( output )
-
-  $("<dd class=\"active\"></dd>")
-    .html("<a id =\"SelectionSingleButton\" href=\"#\">Detail</a>")
-    .appendTo( output );
-
+  output = $( "<ul>" ).addClass( "nav nav-pills" ).append(
+    $("<li>").addClass("active").html("<a id =\"SelectionSingleButton\" href=\"#\">Detail</a>")
+    ).append(
+    $("<li>").html( ("<a id =\"SelectionAllButton\" href=\"#\">All</a>" )))
   return output
 }
 
-function setSelectionWindowAll( container ) {
-  container.footer = mapSelectionDropdown(container);
-  container.main_body = selectionWindowAllFormat
-  return container.update();
+function selectionMainBody( ) {
+  var container = this
+  var main_body = $("<ul>").attr("id", "selectionViews").append(
+    $("<li>").attr("id","SelectionAllList").append( selectionWindowAllFormat( container ) ).hide()
+    ).append(
+    $("<li>").attr("id","SelectionSingleList").addClass("active").append( selectionWindowDetailFormat( container ) )
+    )
+  return main_body
 }
 
-function selectionWindowAllFormat() {
-  var container = this
+function selectionWindowAllFormat( container ) {
   var list = $( "<ul class = \"selectionAllList disable_map\">" );
-  for (var i = 0; i < this.contents.length; i++) {
+  for (var i = 0; i < container.contents.length; i++) {
     var image = container.contents[i].html()
-    var div = $("<div>").addClass( this.name + "_div selectionAllDiv")
+    var div = $("<div>").addClass( container.name + "_div selectionAllDiv")
     list.append( $( "<li>" ).html( div.append( image ) ) )
   };
-  var div = $("<div>").append( $("<span>").html( this.contents.length + " Total" ));
+  var div = $("<div>").append( $("<span>").html( container.contents.length + " Total" ));
   list.appendTo( div )
+
+  mapSelectionDropdown( container, container.photo_ids() ).appendTo( div )
+
   return div;
   };
-
-function setSelectionWindowDetail( container ) {
-  container.footer = "";
-  container.main_body = selectionWindowDetailFormat
-  return container.update();
-}
 
 function switchToInput( event ) {
   var target = $(event.target);
@@ -105,35 +97,52 @@ function photoDetailSpan( field, value, photo_id ) {
           .bind('dblclick', switchToInput )
 }
 
-
-function selectionWindowDetailFormat() {
-  var container = this
+function selectionWindowDetailFormat( container ) {
   var infoDiv = $( "<div>" )
   var infoList = $( "<ul>" )
   var textFields = { "description" : "Description",  "placename" : "Location" }
   var tagFields = { "people_tags" : "Person", "activities_tags" : "Activity", "other_tags" : "Tag" }
 
-  if ( this.contents.length != 0 ) {
-    for (var i = 0; i < this.contents.length; i++) {
-      var base = $("<div>").addClass( this.name + "_div");
-      var photo_id = this.contents[i].photo_id
+  if ( container.contents.length != 0 ) {
+    for (var i = 0; i < container.contents.length; i++) {
+      var base = $("<div>").addClass( container.name + "_div").addClass("container-fluid");
+      var row1 = $( "<div>" ).addClass("row-fluid")
+      var row1contents = $("<div>").addClass("col-xs-12")
+      var row2 = $( "<div>" ).addClass("row-fluid")
+      var row2image = $("<div>").addClass("col-xs-4")
+      var row2info = $("<div>").addClass("col-xs-6")
+      var photo_id = container.contents[i].photo_id
       data = request.getPhoto( photo_id )
 
       //page count
-      base.append( $("<span>").html( ( i + 1 )  + " of " + this.contents.length ) );
+      row1contents.append( $("<span>").html( ( i + 1 )  + " of " + container.contents.length ) );
 
       //title
-      base.append( $("<div>").append( $("<h3>").append( photoDetailSpan( "name", data.name , photo_id ))) );
+      row1contents.append( $("<div>").append( $("<h3>").append( photoDetailSpan( "name", data.name , photo_id ))) );
 
       //image
-      base.append( $("<img>").attr("src", data.image.image.med.url ) );
+      row2image.append( $("<img>").attr("src", data.image.image.med.url ) );
 
       //description and location
       for (var field in textFields) {
-        base.append( $("<div>")
+        row2info.append( $("<div>")
           .html( "<span class=\"photo_detail_title\">" + textFields[field] + ":</span>")
           .append( photoDetailSpan( field, data[field], photo_id )))
       };
+
+
+      //related maps
+      related_maps = []
+      for ( var x = 0; x < data["related_maps"].length; x++ ){
+        related_maps.push( data["related_maps"][x].name )
+      }
+
+      row2info.append( $("<div>").append(
+        $( "<span class=\"photo_detail_title\"></span>" ).html( "In Maps" ))
+        .append( $("<span>").html( related_maps.join(",") ) ))
+
+      //Add to map dropdown
+      row2info.append( mapSelectionDropdown( container, [photo_id] ) );
 
       //tag fields
       var tagBase = $("<div>").html( "<span class=\"photo_detail_title\" id=\"selectionTags_" + photo_id + "\" >Tags:</span>" )
@@ -179,10 +188,12 @@ function selectionWindowDetailFormat() {
         ));
       }
 
-      base.append( tagBase )
-      base.append( tagFooter )
+      row2info.append( tagBase )
+      row2info.append( tagFooter )
+      debugger
+      base.append( row1.append( row1contents ) ).append( row2.append(row2image).append(row2info) )
 
-      if ( i == this.active_content ) {
+      if ( i == container.active_content ) {
         result = $( $("<li>").append(base) ).addClass("focusSelectionWindow")
       } else {
         result = $( $("<li>").append(base) ).hide()
@@ -195,9 +206,10 @@ function selectionWindowDetailFormat() {
   infoDiv.append( infoList )
 
   infoDiv.append(
-    $("<p>").html("Previous")
-      .attr({"id":"selectionDetailPrevious", "class":"button tiny"})
-      .addClass( "navSelectionDetailButton " )
+
+    $("<ul>").addClass("pager").append(
+
+    $("<li>").append( $("<a href=\"#\"></a>").html("Previous")
       .click(function(event) {
         event.preventDefault();
         if ($("li.focusSelectionWindow").prev().length > 0)
@@ -205,31 +217,29 @@ function selectionWindowDetailFormat() {
               .prev("li").addClass("focusSelectionWindow").show() };
         container.active_content--;
       })
-    );
+    )).append(
 
-  infoDiv.append(
-    $("<p>").html("Next")
-      .attr({"id":"selectionDetailNext", "class":"button tiny"})
-      .addClass( "navSelectionDetailButton " )
+    $("<li>").append( $("<a href=\"#\"></a>").html("Next")
       .click(function(event) {
         event.preventDefault();
         if ($("li.focusSelectionWindow").next().length > 0)
-          {$("li.focusSelectionWindow").removeClass("focusSelectionWindow").hide()
-              .next("li").addClass("focusSelectionWindow").show()};
-      container.active_content++;
+          { $("li.focusSelectionWindow").removeClass("focusSelectionWindow").hide()
+              .next("li").addClass("focusSelectionWindow").show() };
+        container.active_content++;
       })
-    );
+    )))
 
   return infoDiv;
 };
 
-function mapSelectionDropdown( container ) {
+function mapSelectionDropdown( container, selected_photos_ids ) {
+
     base = $( "<div>" )
 
-    $( "label")
+    base.append( $( "label" )
         .attr({ "for": "addSelectionToMapDropdown"})
-        .html("Add Selection to:")
-        .appendTo(base);
+        .html("Add to:")
+        .appendTo(base) )
 
     var selectMapDropDown = $("<select />").attr({"id":"addSelectionToMapDropdown", "name":"addSelectionToMapDropdown"});
     var selectMapData = request.getMyMaps();
@@ -239,17 +249,17 @@ function mapSelectionDropdown( container ) {
 
     selectMapDropDown.appendTo( base );
 
-    $("<p>")
-      .attr({"id":"addSelectionToMapButton", "class":"button tiny"})
+    $("<button>")
+      .attr({"id":"addSelectionToMapButton", "class":"round label"})
       .html("Add")
       .appendTo(base)
       .click(function (event) {
+        debugger
         event.preventDefault();
         var value = $("#addSelectionToMapDropdown option:selected").val()
-        for (var i = 0; i < container.contents.length; i++) {
-          var myMapPhoto = request.createMyMapPhoto(value, container.photo_ids()[i] );
+        for (var i = 0; i < selected_photos_ids.length; i++) {
+          var myMapPhoto = request.createMyMapPhoto(value, selected_photos_ids[i] );
         };
-        container.clear_photos();
       });
     return base
   };

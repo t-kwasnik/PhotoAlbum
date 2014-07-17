@@ -1,4 +1,5 @@
 #selected_photos_container {
+  width:500px;
   color: gray;
   text-align: center;
   background-color: rgba(0,0,0,.8);
@@ -6,38 +7,13 @@
   z-index: 2;
 }
 
-#selected_photos_container {
-  text-align: center;
-  padding: .5em;
-}
 
-#selected_photos_container > dl {
-  margin: 0;
-  padding: 0;
-}
-
-#selected_photos_container > div > span {
-  color:orange;
-}
-
-
-#selected_photos_container > dl > dt {
-  color: white;
-}
-
-
-.Selection_div > div > h3 {
+/*.Selection_div > div > h3 {
   font-size: 18pt;
   color: rgb(200, 200 ,200);
 }
 
-.Selection_div > span {
-  float: right;
-  color: orange;
-}
-
 .Selection_div > img {
-  width: 100%;
   border-radius: 3px;
   -webkit-box-shadow: 0px 0px 15px #888888;
   -moz-box-shadow: 0px 0px 15px #888888;
@@ -46,7 +22,6 @@
 
 .selectionAllDiv > img {
   border-radius: 5px;
-  width: auto;
   max-height: 50px;
   margin: .5em;
   -webkit-box-shadow: 0px 0px 15px #888888;
@@ -57,13 +32,6 @@
 .selectionAllList > li {
   display: inline-block;
 }
-
-.Selection_div > div {
-  display: block;
-  text-align: left;
-  width: 100%;
-}
-
 
 .Selection_div > div > span {
   margin: 0 .25em;
@@ -84,11 +52,10 @@
 .Selection_div > div > span > input {
   color: black;
 }
-
+*/
 .SelectionTag {
   margin: 2px;
 }
-
 
 .PersonTag {
   background-color: #549431;
@@ -102,7 +69,3 @@
   background-color: #FF9966;
 }
 
-.navSelectionDetailButton {
-  margin: 4em ;
-
-}
