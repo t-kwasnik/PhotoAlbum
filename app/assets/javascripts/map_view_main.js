@@ -10,6 +10,6 @@ function loadMainView() {
       "unmap" : unmappedPhotoCollection
     };
 
-   mainView.features = request.getPhotos();
+   mainView.features = request.getMainPhotos;
    mainView.render();
 };

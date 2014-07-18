@@ -11,6 +11,18 @@ request = {
     })
     return data
   },
+  "getMainPhotos" : function() {
+    var data = ""
+    $.ajax({
+        url: '/main.json',
+        dataType: 'json',
+        async: false,
+        success: function(d) {
+              data = d;
+        }
+    })
+    return data
+  },
   "getPhoto" : function( photo_id ) {
     var data = ""
     $.ajax({

@@ -46,8 +46,8 @@ function selectionWindowAllFormat( container ) {
 
   allFormat.append( selectionDetailAllList )
   allFormat.append(
-    $( "<div>" ).addClass("row-fluid")
-      .append( $("<div>").addClass("col-xs-12").html( mapSelectionDropdown( container, container.photo_ids() ) )
+    $( "<div>" ).addClass("row-fluid addAllDropdown")
+      .append( $("<div>").addClass("col-xs-12").html( mapSelectionDropdown( container, "div.addAllDropdown select", container.photo_ids() ) )
     )
   );
   return allFormat
@@ -143,7 +143,7 @@ function buildSelectionDetailDiv( container, collectionPhoto ) {
     .append( $("<span class=\"selectionDetailAttribute\"  >").html( related_maps.join(",") ) ))
 
   //Add to map dropdown
-  row2info.append( mapSelectionDropdown( container, [photo_id] ) );
+  row2info.append( mapSelectionDropdown( container, "ul.selectionDetailList select" , [photo_id] ) );
 
   //tag fields
   var tagBase = $("<div class=\"selectionDetail\"></div>").html( "<span class=\"selectionDetailTitle\" id=\"selectionTags_" + photo_id + "\" >Tags:</span>" )
@@ -196,6 +196,21 @@ function buildSelectionDetailDiv( container, collectionPhoto ) {
       .append(
         row2.append(row2image).append(row2info)
       )
+
+  //is public
+  row2info.append( $("<div class=\"selectionDetail\"></div>")
+                  .append( $("<span>")
+                    .attr( { "class":"selectionDetailTitle", "id":"is_public_" + photo_id } )
+                    .html("Make Public"))
+                  .append( $("<input type=\"checkbox\">")
+                              .val(data["is_public"])
+                              .on("click", function( event ) {
+                                var value = $(event.target).val() != "true"
+                                var data = {"photo":{"is_public": value}}
+                                request.updatePhoto( photo_id, data )
+                              }  )
+                    ))
+
   return base
 }
 
@@ -243,7 +258,7 @@ function switchToInput( event ) {
   target.children().first().focus();
 }
 
-function mapSelectionDropdown( container, selected_photos_ids ) {
+function mapSelectionDropdown( container, valueSource, selected_photos_ids ) {
 
     var base = $( "<div>" ).addClass("selectionDetail")
     base.append( $( "<label>" )
@@ -264,10 +279,10 @@ function mapSelectionDropdown( container, selected_photos_ids ) {
       .attr({"id":"addSelectionToMapButton", "class":"btn btn-sm"})
       .html("Add")
       .appendTo(base)
-      .click(function (event) {
+      .click(function ( event ) {
         debugger
         event.preventDefault();
-        var value = $("#addSelectionToMapDropdown option:selected").val()
+        var value = $(valueSource).val()
         for (var i = 0; i < selected_photos_ids.length; i++) {
           var myMapPhoto = request.createMyMapPhoto(value, selected_photos_ids[i] );
         };

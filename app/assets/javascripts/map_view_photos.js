@@ -56,7 +56,7 @@ function loadPhotosView() {
 
   //load custom page listeners
 
-  $("#selectedPhotosContainer").draggable({ containment: $("body") })
+  $("#selectedPhotosContainer").draggable({ containment: $("body") }).hide()
 
   photosView.layers.markers.layer.on('click', function(e) {
     $("#selectedPhotosContainer").show()

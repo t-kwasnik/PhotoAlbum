@@ -21,7 +21,7 @@ class PhotosController < ApplicationController
     @photo.update_attributes( photo_params )
     if @photo.save
       respond_to do |format|
-        format.json { render json: @photo }
+        format.json { render json: @photo, serializer: PhotoQuickDetailSerializer }
       end
     end
   end
@@ -43,7 +43,7 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.required(:photo).permit( :image, :name, :description, :placename )
+    params.required(:photo).permit( :image, :name, :description, :placename, :is_public )
   end
 
   def default_serializer_options
