@@ -32,7 +32,10 @@ function buildSelectionWindow() {
   var container = this
   $("#selectedPhotosContainer")
     .append( $( "<div>" ).addClass("row-fluid")
-      .append($( "<div>" ).addClass("col-xs-3") ).html( selectionViewToggle() ))
+      .append( $( "<div>" ).addClass("col-xs-11").html( selectionViewToggle() ) )
+      .append( $( "<div>" ).addClass("col-xs-1").html(
+        $("<i class=\"fa fa-power-off\"></i>").click( function(){
+          $("#selectedPhotosContainer").hide() } ) )))
     .append( selectionWindowAllFormat( container ) )
     .append( selectionWindowDetailFormat( container ) )
 }
@@ -144,18 +147,19 @@ function buildSelectionDetailDiv( container, collectionPhoto ) {
 
   //tag fields
   var tagBase = $("<div class=\"selectionDetail\"></div>").html( "<span class=\"selectionDetailTitle\" id=\"selectionTags_" + photo_id + "\" >Tags:</span>" )
-  var tagFooter = $("<div>")
+  var tagsList = $("<ul>")
+  var tagAdder = $("<div>")
 
   for (var tagField in tagFields) {
 
     for (var ii = 0; ii < data[tagField].length; ii++) {
-      tagBase.append( $("<div>")
+      tagsList.append( $("<li>")
           .html( data[tagField][ii].name )
           .addClass( "SelectionTag round label " + tagFields[tagField] + "Tag" )
           .append( deleteTagButton( data[tagField][ii].id )))
     }
 
-    tagFooter.append( $("<div>")
+    tagBase.append( $("<div>")
       .html( tagFields[tagField] +" + " )
       .addClass( "SelectionTag round label " + tagFields[tagField] + "Tag" )
       .attr("id", tagField + "_" + photo_id)
@@ -186,8 +190,7 @@ function buildSelectionDetailDiv( container, collectionPhoto ) {
     ));
   }
 
-  row2info.append( tagBase )
-  row2info.append( tagFooter )
+  row2info.append( tagBase.append( tagsList) )
   base.append(
         row1.append( row1contents ) )
       .append(
@@ -249,7 +252,7 @@ function mapSelectionDropdown( container, selected_photos_ids ) {
         .html("Add to:")
         .appendTo(base) )
 
-    var selectMapDropDown = $("<select />").attr({"id":"addSelectionToMapDropdown", "name":"addSelectionToMapDropdown"});
+    var selectMapDropDown = $("<select />").attr({"id":"addSelectionToMapDropdown", "name":"addSelectionToMapDropdown"}).addClass("selectpicker");
     var selectMapData = container.related_maps;
     for (var i = 0; i < selectMapData.length; i++) {
         $( $("<option>").attr({"name" : selectMapData[i].name, "value" : selectMapData[i].id })).html(selectMapData[i].name).appendTo(selectMapDropDown);
@@ -258,7 +261,7 @@ function mapSelectionDropdown( container, selected_photos_ids ) {
     selectMapDropDown.appendTo( base );
 
     $("<button>")
-      .attr({"id":"addSelectionToMapButton", "class":"round label"})
+      .attr({"id":"addSelectionToMapButton", "class":"btn btn-sm"})
       .html("Add")
       .appendTo(base)
       .click(function (event) {

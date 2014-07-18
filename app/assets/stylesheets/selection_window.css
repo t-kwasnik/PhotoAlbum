@@ -16,18 +16,13 @@
 
 }
 
-
 .selectionPageCount {
   color: orange;
   float: right;
 }
 
-.selectionDetail {
-  text-align: left;
-
-}
-
 .selectionDetailTitle{
+  display: inline-block;
   color: orange;
   font-size: 11pt;
   font-weight: bold;
@@ -35,19 +30,37 @@
 }
 
 .selectionDetailAttribute {
+  display: inline-block;
   font-size: 11pt;
   font-family: 'Oswald', sans-serif;
   color: white
 }
 
+.selectionDetail {
+  text-align: left;
+  max-width: 100%;
+}
+
+.selectionDetail > ul > li {
+  display: inline-block;
+}
 
 .selectionDetailHeader > span {
+  font-size: 18pt;
+}
+
+.selectionDetailHeader {
   font-size: 18pt;
   color: white;
   font-weight: bold;
   font-family: 'Oswald', sans-serif;
   margin: .5em;
 }
+
+#addSelectionToMapDropdown {
+  font-size: 20pt;
+}
+
 
 .photo_detail {
   color: white;
@@ -69,8 +82,43 @@
   background-color: #FF9966;
 }
 
+
+ #addSelectionToMapButton{
+   margin: 0 .5em;
+   color: white;
+   background: rgba(50,50,50,.4);
+   border: 1px solid white;
+   border-radius: 10px;
+ }
+
+ #addSelectionToMapButton:hover{
+   color: white;
+   background: rgba(50,50,50,.1);
+   border-radius: 1px solid white;
+ }
+
+
 .pager > li {
+  color: black;
   margin: 1em;
   float: right;
+  background: rgba(50,50,50,.4);
 }
 
+.pager > li > a {
+  background: rgba(50,50,50,.4);
+  color: white;
+}
+
+.pager > li:hover {
+  background: rgba(50,50,50,1);
+}
+
+.pager > li > a:hover {
+  background: rgba(50,50,50,1);
+    color: white;
+}
+
+i {
+  margin: 1em;
+}

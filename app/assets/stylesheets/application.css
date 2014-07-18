@@ -48,6 +48,7 @@ label {
   color: orange;
 }
 
+
 .navbar {
   margin: 0;
   position: relative;
@@ -58,11 +59,14 @@ label {
   margin: 0;
 }
 
-.leaflet-container h3 {
-  font-family: 'Oswald', sans-serif, bold;
-  padding: .25em;
+.leaflet-container {
   margin: 0;
-  line-height: 0;
+  line-height: none;
+  font-size: none;
+}
+
+.leaflet-container label{
+  font-size: 11pt;
 }
 
 .side_bar{
