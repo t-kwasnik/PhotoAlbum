@@ -2,17 +2,23 @@ function parseNewPhoto( mapWindow, geoJSON ) {
   if ( geoJSON.type == "Feature" ) {
       mapWindow.layers.markers.insert( geoJSON )
       mapWindow.containers.map.contents.push( new CollectionPhoto( geoJSON.properties.photo_id, geoJSON.properties.image, mapWindow.containers.map.name))
-      mapWindow.containers.map.update()
+      mapWindow.containers.map.build()
     } else {
       mapWindow.containers.unmap.contents.push( new CollectionPhoto( geoJSON.properties.photo_id, geoJSON.properties.image, mapWindow.containers.unmap.name))
-      mapWindow.containers.unmap.update()
+      mapWindow.containers.unmap.build()
     }
   };
+
+
 
 function loadPhotosView() {
   // create window to hold contents
 
   var photosView = new MapWindow('photos_map');
+
+  // grab data
+  var photos = request.getPhotos();
+  var my_maps = request.getMyMaps()
 
   // build empty containers for mapped, unmapped and selected
 
@@ -23,10 +29,8 @@ function loadPhotosView() {
   photosView.containers = {
     "map" : mappedPhotoCollection,
     "unmap" : unmappedPhotoCollection,
-    "select" : populateSelectionWindow( selectedPhotoCollection )
+    "select" : populateSelectionWindow( selectedPhotoCollection, my_maps )
   }
-  // specify initial features to map
-  var photos = request.getPhotos();
 
   //build markers
   markers = new MapLayer
@@ -37,8 +41,6 @@ function loadPhotosView() {
   }
 
   //load user maps
-  var my_maps = request.getMyMaps()
-
   var mapBoxes = new MapBoxGroup("#my_maps_container")
 
   for(var i=0; i < my_maps.length; i++){
@@ -54,9 +56,10 @@ function loadPhotosView() {
 
   //load custom page listeners
 
-  $("#selected_photos_container").draggable({ containment: $("body") })
+  $("#selectedPhotosContainer").draggable({ containment: $("body") })
 
   photosView.layers.markers.layer.on('click', function(e) {
+    $("#selectedPhotosContainer").show()
     prop = e.layer.feature.properties
     prop['old-color'] = prop['marker-color'];
     prop['marker-color'] = '#B24926';
@@ -66,8 +69,7 @@ function loadPhotosView() {
 
     if ( $.inArray( prop.photo_id, photosView.containers.select.photo_ids()) == -1 ) {
       var new_photo = new CollectionPhoto( prop.photo_id, prop.image, photosView.containers.select.name )
-      photosView.containers.select.contents.push( new_photo );
-      photosView.containers.select.update()
+      photosView.containers.select.insertPhoto( new_photo );
     };
   });
 

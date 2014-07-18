@@ -1,5 +1,5 @@
-#selected_photos_container {
-  width:500px;
+#selectedPhotosContainer {
+  position: relative;
   color: gray;
   text-align: center;
   background-color: rgba(0,0,0,.8);
@@ -7,54 +7,54 @@
   z-index: 2;
 }
 
-
-/*.Selection_div > div > h3 {
-  font-size: 18pt;
-  color: rgb(200, 200 ,200);
-}
-
-.Selection_div > img {
-  border-radius: 3px;
-  -webkit-box-shadow: 0px 0px 15px #888888;
-  -moz-box-shadow: 0px 0px 15px #888888;
-  box-shadow: 0px 0px 15px #888888;
-}
-
-.selectionAllDiv > img {
+.selectionImage {
+  width: 100%;
   border-radius: 5px;
-  max-height: 50px;
-  margin: .5em;
-  -webkit-box-shadow: 0px 0px 15px #888888;
-  -moz-box-shadow: 0px 0px 15px #888888;
-  box-shadow: 0px 0px 15px #888888;
+  -moz-box-shadow:    0px 0px 5px 6px rgba(255,255,255,.1);
+  -webkit-box-shadow: 0px 0px 5px 6px rgba(255,255,255,.1);
+  box-shadow:         0px 0px 5px 6px rgba(255,255,255,.1);
+
 }
 
-.selectionAllList > li {
-  display: inline-block;
+
+.selectionPageCount {
+  color: orange;
+  float: right;
 }
 
-.Selection_div > div > span {
-  margin: 0 .25em;
-  color: rgb(200, 200 ,200)
+.selectionDetail {
+  text-align: left;
+
 }
 
-.Selection_div > div > span.photo_detail {
-  font-size: 10pt;
+.selectionDetailTitle{
+  color: orange;
+  font-size: 11pt;
+  font-weight: bold;
+  margin: 0 .5em 0 0;
+}
+
+.selectionDetailAttribute {
+  font-size: 11pt;
+  font-family: 'Oswald', sans-serif;
+  color: white
+}
+
+
+.selectionDetailHeader > span {
+  font-size: 18pt;
   color: white;
+  font-weight: bold;
+  font-family: 'Oswald', sans-serif;
   margin: .5em;
 }
 
-.Selection_div > div > span.photo_detail_title {
-  font-size: 12pt;
-  margin: .5em;
+.photo_detail {
+  color: white;
 }
 
-.Selection_div > div > span > input {
-  color: black;
-}
-*/
 .SelectionTag {
-  margin: 2px;
+  margin:5px
 }
 
 .PersonTag {
@@ -67,5 +67,10 @@
 
 .TagTag {
   background-color: #FF9966;
+}
+
+.pager > li {
+  margin: 1em;
+  float: right;
 }
 

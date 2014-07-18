@@ -18,7 +18,8 @@
  */
 
 input {
-  color: black;
+  color: white;
+  font-size: 14pt;
   background: none;
   border:none;
 }

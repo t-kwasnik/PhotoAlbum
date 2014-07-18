@@ -71,7 +71,7 @@ function Panel(base_element_tag, header) {
     return html;
   };
   this.main_body = this.defaultFormat;
-  this.update = function (){
+  this.build = function (){
     output = $( this.main.base ).html(" ");
     $( this.main.header ).appendTo( output );
     this.main_body().appendTo( output );
