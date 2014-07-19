@@ -20,12 +20,12 @@
 input {
   color: white;
   font-size: 14pt;
-  background: none;
+  background: transparent;
   border:none;
 }
 
 input:active {
-  color: black;
+  color: white;
   background: none;
   border:none;
 }

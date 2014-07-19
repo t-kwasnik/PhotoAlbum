@@ -10,18 +10,30 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 
-//= require jquery
-//= require jquery_ujs
+
 //= require mapbox.js
 //= require bootstrap
+//= require jquery
+//= require jquery_ujs
 //= require_tree .
 
 
-$(document).ready(function(){
-  setTimeout(function(){
+
+$(document).ready(
+
+  var disableLinks = ["#signInButton", "#signUpButton" ]
+
+  for(var i=0;i < disableLinks.length; i++){
+
+  $(disableLinks[i]).click( function( event ) {
+    event.preventDefault();
+  })
+
+  }
+  setTimeout( function(){
     $(".alert").fadeOut();
-  },2000)
-})
+  },5000)
+)
 
 
 
