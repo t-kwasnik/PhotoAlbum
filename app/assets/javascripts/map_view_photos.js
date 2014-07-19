@@ -9,8 +9,6 @@ function parseNewPhoto( mapWindow, geoJSON ) {
     }
   };
 
-
-
 function loadPhotosView() {
   // create window to hold contents
 

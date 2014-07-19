@@ -1,0 +1,42 @@
+.modal-content {
+  display: inline-block;
+  background: rgba(0,0,0,.8);
+  margin-top:10%;
+  color: white;
+}
+
+.modal-dialog {
+  text-align: center;
+}
+
+.modal-header {
+  font-family: 'Oswald', sans-serif;
+}
+.close i {
+  color: white;
+  margin: 0;
+}
+
+.form-inputs div {
+  margin: .5em 0;
+}
+
+.form-inputs label {
+  width: 80px;
+  font-size: 11pt;
+  margin: .5em 1em .5em 0;
+}
+
+.form-inputs input {
+  padding: .25em;
+  border: 1px solid rgb(180,180,180);
+}
+
+.submitLogIn {
+  font-size: 20pt;
+  margin: 0;
+}
+
+.submitLogIn:hover {
+  color: green;
+}
