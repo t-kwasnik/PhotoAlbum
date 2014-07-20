@@ -19,7 +19,7 @@
 
 
 
-$(document).ready(
+$(document).ready( function() {
 
   var disableLinks = ["#signInButton", "#signUpButton" ]
 
@@ -32,8 +32,8 @@ $(document).ready(
   }
   setTimeout( function(){
     $(".alert").fadeOut();
-  },5000)
-)
+  },3000)
+})
 
 
 

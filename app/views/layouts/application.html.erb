@@ -70,7 +70,8 @@
           <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
         </div>
         <div class="modal-body">
-          <%= simple_form_for(:user, :url => user_registration_path) do |f| %>
+          <%= simple_form_for(:user, url: user_registration_path) do |f| %>
+
             <%= f.error_notification %>
 
             <div class="form-inputs">

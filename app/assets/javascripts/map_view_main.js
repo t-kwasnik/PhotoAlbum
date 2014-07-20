@@ -11,5 +11,5 @@ function loadMainView() {
     };
 
    mainView.features = request.getMainPhotos;
-   mainView.render();
+   mainView.startUp();
 };
