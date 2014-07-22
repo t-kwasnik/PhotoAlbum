@@ -3,14 +3,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     user = User.new(user_params)
-    response = { user_username: false, user_email: false, user_password: false, user_confirm: false }
+    response = { user_username: false, user_email: false, user_password: false }
 
     response[:user_username] = true if user.valid_new_username
     response[:user_email] = true if user.valid_new_email
 
     if user_params["password"]
       response[:user_password] = true if user_params["password"].length > 7
-      response[:user_confirm] = true if user_params["password"] == user_params["password_confirmation"]
     end
 
     all_valid = true
