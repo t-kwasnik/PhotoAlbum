@@ -11,6 +11,20 @@ request = {
     })
     return data
   },
+  "checkUser" : function( userData ) {
+    var data = ""
+    $.ajax({
+        url: '/users',
+        type: 'POST',
+        data: userData,
+        dataType: 'json',
+        async: false,
+        success: function( d ) {
+              data = d;
+        }
+    })
+    return data
+  },
   "getMainPhotos" : function() {
     var data = ""
     $.ajax({
