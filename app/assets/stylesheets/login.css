@@ -37,6 +37,18 @@
   margin: 0;
 }
 
+.signUpSuccess {
+  font-size: 20pt;
+  color: green;
+  margin: 5px;
+}
+
+.signUpFail {
+  font-size: 20pt;
+  color: orange;
+  margin: 5px;
+}
+
 .submitLogIn:hover {
   color: green;
 }

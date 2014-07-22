@@ -15,6 +15,7 @@ request = {
     var data = ""
     $.ajax({
         url: '/users',
+        type: 'POST',
         data: userData,
         dataType: 'json',
         async: false,
