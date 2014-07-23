@@ -56,7 +56,12 @@ function loadMainView() {
    $( "#signUp div.input").append("<i></i>")
    $( "#signUp form button").hide()
    $( "#signUp input" ).keyup( checkInput )
-   $( "div.user_password input").keypress( function( event ){
+   $( "#signUp input" ).keypress( function( event ){
+      if ( event.keyCode == 13 ) {
+        event.preventDefault();
+      }
+   })
+   $( "div.user_password input").click( function( event ){
       $( "div.user_password_confirmation input" ).val("")
       $( "div.user_password_confirmation i" ).attr("class","none")
    } )
