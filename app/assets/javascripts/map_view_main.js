@@ -1,4 +1,4 @@
-function checkStandardInput( event ) {
+function checkInput( event ) {
   var field = $( event.target ).attr( "name" )
   var value = $( event.target ).val()
   var elem_id = $( event.target ).attr( "id" )
@@ -6,22 +6,36 @@ function checkStandardInput( event ) {
   data[field] = value
 
   var result = request.checkUser( data )
+  var outcome
+  if ( $( event.target ).attr( "name" ) == "user[password_confirmation]" ) {
+    var password = $("#signUp div.user_password input").val()
+    if ( $(event.target).val() == password ) {
+      outcome = true
+    } else {
+      outcome = false
+    }
+  } else {
+      outcome = result[elem_id]
+  }
 
-  if ( result[elem_id] == true ) {
+  if ( outcome == true) {
     $("div." + elem_id + " i").attr("class","fa fa-check-circle-o signUpSuccess")
   } else {
     $("div." + elem_id + " i").attr("class","fa fa-ban signUpFail")
   }
 
-}
-
-function checkPasswordConfirmation( event ) {
-  var password = $("#signUp div.user_password input").val()
-  if ( $(event.target).val() == password ) {
-    $( "div.user_password_confirmation i" ).attr("class","fa fa-check-circle-o signUpSuccess")
-    $("#signUp form button").show()
+  var successes = 0
+  for ( var i = 0; i < $("#signUp div.input i").length; i++ ) {
+    if ( $( $("#signUp div.input i")[i]).hasClass("fa fa-check-circle-o signUpSuccess") ) {
+      successes++
+    }
   }
 
+  if ( successes == 4 ){
+    $("#signUp form button").show()
+  } else {
+    $("#signUp form button").hide()
+  }
 }
 
 function loadMainView() {
@@ -39,14 +53,18 @@ function loadMainView() {
    mainView.features = request.getMainPhotos;
    mainView.startUp();
 
-   $("#signUp div.input").append("<i></i>")
-   $("#signUp form button").hide()
-   $("div.user_username input").focusout( checkStandardInput )
-   $("div.user_email input").focusout( checkStandardInput )
-   $("div.user_password input").focusout( checkStandardInput )
-   $("div.user_password input").keypress( function( event ){
+   $( "#signUp div.input").append("<i></i>")
+   $( "#signUp form button").hide()
+   $( "#signUp input" ).focusout( checkInput )
+   $( "#signUp input user_password_confirmation" ).keyup( checkInput )
+   $( "#signUp input" ).keypress( function( event ){
+      if ( event.keyCode == 13 ) {
+        event.preventDefault();
+      }
+   })
+   $( "div.user_password input").click( function( event ){
       $( "div.user_password_confirmation input" ).val("")
-      $("#signUp form button").hide()
+      $( "div.user_password_confirmation i" ).attr("class","none")
    } )
-  $( "div.user_password_confirmation input" ).keyup( checkPasswordConfirmation )
+
 };
