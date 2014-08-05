@@ -1,5 +1,4 @@
 function checkInput( event ) {
-  debugger
   var field = $( event.target ).attr( "name" )
   var value = $( event.target ).val()
   var elem_id = $( event.target ).attr( "id" )
