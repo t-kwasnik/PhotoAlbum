@@ -1,4 +1,5 @@
 function checkInput( event ) {
+  debugger
   var field = $( event.target ).attr( "name" )
   var value = $( event.target ).val()
   var elem_id = $( event.target ).attr( "id" )
@@ -56,12 +57,12 @@ function loadMainView() {
    $( "#signUp div.input").append("<i></i>")
    $( "#signUp form button").hide()
    $( "#signUp input" ).focusout( checkInput )
-   $( "#signUp input user_password_confirmation" ).keyup( checkInput )
    $( "#signUp input" ).keypress( function( event ){
       if ( event.keyCode == 13 ) {
         event.preventDefault();
       }
    })
+   $( "#user_password_confirmation" ).keyup( checkInput )
    $( "div.user_password input").click( function( event ){
       $( "div.user_password_confirmation input" ).val("")
       $( "div.user_password_confirmation i" ).attr("class","none")
