@@ -1,3 +1,13 @@
+.title {
+  font-family: 'Lobster', cursive;
+  font-size: 30pt;
+  color: white;
+}
+
+.white {
+  color: white;
+}
+
 .modal-content {
   display: inline-block;
   background: rgba(0,0,0,.8);
