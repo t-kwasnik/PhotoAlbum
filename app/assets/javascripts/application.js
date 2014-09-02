@@ -21,15 +21,16 @@
 
 $(document).ready( function() {
 
-  var disableLinks = ["#signInButton", "#signUpButton" ]
+  var disableLinks = ["#signInButton","#signUpButton" ]
 
   for(var i=0;i < disableLinks.length; i++){
 
   $(disableLinks[i]).click( function( event ) {
     event.preventDefault();
+    $( "#" + $(event.target).attr("id").slice(0,-6) ).modal();
   })
-
   }
+
   setTimeout( function(){
     $(".alert").fadeOut();
   },3000)
