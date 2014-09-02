@@ -11,7 +11,7 @@
  * file per style scope.
  *
  *= require mapbox
- *= require bootstrap
+ *= require bootstrap.min
  *= require_tree .
  *= require_self
 
