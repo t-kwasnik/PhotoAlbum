@@ -15,11 +15,20 @@
 # gem 'pg'
 #
 default: &default
-  adapter: postgis
-  encoding: unicode
+  #adapter: postgis
+  #encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: 5
+  #pool: 5
+
+    adapter: postgis
+    encoding: unicode
+    database: <%= ENV["RDS_DB_NAME"] %>
+    username: <%= ENV["RDS_USERNAME"] %>
+    password: <%= ENV["RDS_PASSWORD"] %>
+    host: <%= ENV["RDS_HOSTNAME"] %>
+    port: <%= ENV["RDS_PORT"] %>
+    pool: 5
 
 development:
     adapter: postgis
