@@ -2,7 +2,7 @@ function MapWindow( mapCanvas ) {
 
   this.main = this
   this.name = mapCanvas
-  this.mapCanvas = L.mapbox.map( mapCanvas, 'examples.map-i86nkdio', { zoomControl: false }) ;
+  this.mapCanvas = L.mapbox.map( mapCanvas, 'tkbrewski.idmej055', { zoomControl: false }) ;
   this.layers = {};
   this.containers = {};
 
