@@ -17,8 +17,8 @@
             <ul>
               <%= simple_form_for [ @my_map, p ] do |f| %>
                 <li><%= f.input :name, :input_html => { id:  "Heading#{i}" }, label: "Heading#{i}"  %></li>
-                <li><img id="photo<%= p.photo_id %>" src=<%= p.photo.image_url %> /></li>
-                <li><%= f.input :description, input_html: { id:  "Description#{i}" }, label: "Description#{i}" %></li>
+                <li><img class="my_map_image" id="photo<%= p.photo_id %>" src=<%= p.photo.image_url %> /></li>
+                <li class="my_map_image" ><%= f.input :description, input_html: { id:  "Description#{i}" }, label: "Description#{i}" %></li>
                 <%= f.submit "Save_Entry#{i}" %>
               <% end %>
             </ul>

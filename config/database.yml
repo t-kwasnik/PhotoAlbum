@@ -62,8 +62,16 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: photo_album_test
+  #<<: *default
+  #database: photo_album_test
+  adapter: postgis
+  encoding: unicode
+  database: <%= ENV["RDS_DB_NAME"] %>
+  username: <%= ENV["RDS_USERNAME"] %>
+  password: <%= ENV["RDS_PASSWORD"] %>
+  host: <%= ENV["RDS_HOSTNAME"] %>
+  port: <%= ENV["RDS_PORT"] %>
+  pool: 5
 
 
 # As with config/secrets.yml, you never want to store sensitive information,

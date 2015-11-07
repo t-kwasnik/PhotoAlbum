@@ -212,6 +212,16 @@ label {
   display: block;
 }
 
+.my_map_image {
+  width: 100%;
+  display: block;
+}
+
+.my_map_image > img{
+  width: 100%;
+  display: block;
+}
+
 .c_map_content > img {
   border-radius: 10px;
 }
