@@ -48,7 +48,6 @@ label {
   color: orange;
 }
 
-
 .navbar {
   margin: 0;
   position: relative;
@@ -261,3 +260,12 @@ label {
   text-align: left;
   display: inline-block;
 }
+
+.black_text {
+  color: black;
+}
+
+.user_edit_bt > div > div > input {
+  color: black;
+}
+
